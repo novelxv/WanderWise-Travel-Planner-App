@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-import sys
+# from ui.utils import getFont
 
 # dropdown input button. To change currently showed text use the following:
 # drop_down = DropDown(option_type="transport", button_text = "Select Option")
@@ -16,16 +16,17 @@ class DropDown(QtWidgets.QWidget):
         # Dropdown button
         self.dropdown_button = QtWidgets.QPushButton()
         self.dropdown_button.setCursor(QtCore.Qt.PointingHandCursor)
+        # self.option_menu.setFont(getFont("Regular", 10))
         self.dropdown_button.setStyleSheet("""
             QPushButton {
                 text-align: left; 
                 box-shadow: 3px 3px 5px rgba(0, 0.5, 0, 0);
             }
         """)
-        self.dropdown_button.setIcon(QtGui.QIcon("img/icons/Dropdown.png"))  # Set the button icon
+        self.dropdown_button.setIcon(QtGui.QIcon("/img/icons/Dropdown.png")) 
         self.dropdown_button.setIconSize(QtCore.QSize(24, 24))
         self.dropdown_button.clicked.connect(self.show_menu)
-        self.dropdown_button.setText(self.button_text)  # Set the button text from the parameter
+        self.dropdown_button.setText(self.button_text)
         self.layout.addWidget(self.dropdown_button)
 
         # Options menu
@@ -34,14 +35,17 @@ class DropDown(QtWidgets.QWidget):
             QMenu {
                 border: 1px solid #D9DDEA;
                 box-shadow: 3px 3px 5px rgba(0, 0.5, 0, 0);
+                border-radius: 5px;
+                background-color: #FFF9ED;
             }
             QMenu::item {
-                background-color: white;
+                border-radius: 15px;
+                background-color: #FFF9ED;
                 color:black;
                 padding: 5px 16px 5px 12px;
             }
             QMenu::item:hover, QMenu::item:selected { 
-                background-color: #F5F5F5;
+                background-color: #FFBE00;
                 color: black; }
         """)
         self.option_menu.setObjectName("option_menu")
@@ -75,20 +79,3 @@ class DropDown(QtWidgets.QWidget):
         
     def set_button_text(self, text):
         self.dropdown_button.setText(text)
-
-
-
-# class DropDown(QtWidgets.QWidget):
-#     def __init__(self):
-#         super().__init__()
-#         combobox = QtWidgets.QComboBox(self)
-#         combobox.addItems(['HHA', 'HIHI', 'HOHO'])
-#         self.show()
-
-# if __name__ == '__main__':
-#     app = QtWidgets.QApplication(sys.argv)
-#     mw = DropDown()
-#     sys.exit(app.exec())
-        
-
-
