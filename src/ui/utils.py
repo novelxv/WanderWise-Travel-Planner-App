@@ -1,51 +1,38 @@
+from PyQt5 import QtGui
+import io
 import os
-import sys
-import re
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtGui import QFont, QFontDatabase
+import shutil
+from PIL import Image, ImageCms
+from PyQt5.QtGui import QFontDatabase
 
-# CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-CURRENT_DIRECTORY = os.getcwd()
-# def addText(pixmap, w, h, name):
-#     painter = QtGui.QPainter(pixmap)
-#     font = QtGui.QFont("Montserrat_Alternates")
-#     font.setPointSize(36)
-#     position = QtCore.QRect(0, 0, w, h)
-#     painter.setFont(font)
-#     painter.drawText(position, QtCore.Qt.AlignCenter, name)
-#     painter.end()
-#     return pixmap
-
-# def create_pixmap(text):
-#     pixmap = QtGui.QPixmap(512 * QtCore.QSize(1, 1))
-#     pixmap.fill(QtCore.Qt.white)
-#     return addText(pixmap, 512, 512, text)
-
-def load_font(font_path):
-    list = [font for font in os.listdir(font_path) if font.endswith(".ttf")]
-    if list:
-        for font in list:
-            QFontDatabase.addApplicationFont(os.path.join(font_path, font))
-
-def getFont(text):
-    font_path = os.path.join(CURRENT_DIRECTORY, "assets", "fonts", "Montserrat_Alternates", "OFL.txt")
-
+from PyQt5.QtGui import QFontDatabase, QFont
+def getFont(font_family, font_size, font_weight="Regular"):
+    """Get font based on font family, size, and weight"""
+    # Construct the font file path based on the font family and weight
+    font_path = f"img/fonts/{font_family}/{font_family}-{font_weight}.ttf"
     print(font_path)
-    with open(font_path, "r") as r:
-        result = r.read()
+    # Add the font to the application font database
+    font_id = QFontDatabase.addApplicationFont(font_path)
 
-    pattern = re.compile("\'(.*)\'")
-    fonts_list = pattern.findall(result)
+    # Get the font family name
+    font_families = QFontDatabase.applicationFontFamilies(font_id)
+    if font_families:
+        font_family_name = font_families[0]
+    else:
+        # Handle error loading font
+        print(f"Error loading font: {font_path}")
+        return None
 
-    list = [font for font in os.listdir(font_path) if font.endswith(".ttf")]
-    if list:
-        for font in list:
-            QFontDatabase.addApplicationFont(os.path.join(font_path, font))
+    # Create a QFont object using the font family
+    font = QFont(font_family_name)
 
-    if fonts_list:
+    # Set the font size
+    font.setPointSize(font_size)
 
-    # id = QtGui.QFontDatabase.addApplicationFont(font_path)
-    # if QtGui.QFontDatabase.applicationFontFamilies(id) == -1:
-    #     print("problem loading font")
-    #     sys.exit(-1)
-    # return create_pixmap(text)
+    # Set the font weight
+    if font_weight.lower() == "bold":
+        font.setWeight(QFont.Bold)
+    else:
+        font.setWeight(QFont.Normal)
+
+    return font
