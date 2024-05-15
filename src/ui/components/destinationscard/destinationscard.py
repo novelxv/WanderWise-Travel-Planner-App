@@ -47,7 +47,7 @@ class MainWindow(QWidget):
         layout = QVBoxLayout()
 
         # Create and add custom button
-        button = CustomButton('foto_1.jpg', 'Bandung')
+        button = CustomButton('img/images/foto_1.jpg', 'Bandung')
         layout.addWidget(button)
 
         # Set layout to the window
