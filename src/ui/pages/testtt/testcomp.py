@@ -1,5 +1,4 @@
 import sys
-# sys.path.insert(0, 'C:\\Users\\Lenovo\\Project\\if2250-2024-k02-g11-wanderwise\\src')
 import signal
 from PyQt5.QtWidgets import QApplication
 from src.ui.components.popup.pop_up_confirm import ConfirmationDialog

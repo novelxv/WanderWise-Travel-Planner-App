@@ -4,6 +4,17 @@ WanderWise.egg-info/PKG-INFO
 WanderWise.egg-info/SOURCES.txt
 WanderWise.egg-info/dependency_links.txt
 WanderWise.egg-info/top_level.txt
+src/__init__.py
+src/main.py
+src/app/__init__.py
+src/app/utils/__init__.py
+src/app/utils/mymath/__init__.py
+src/app/utils/mymath/addition.py
+src/controller/__init__.py
+src/controller/artikel_controller.py
+src/controller/destinasi_controller.py
+src/controller/itinerary_controller.py
+src/database/__init__.py
 tests/__init__.py
 tests/utils/__init__.py
 tests/utils/mymath/__init__.py

@@ -10,5 +10,3 @@ PyQt5-sip==12.13.0
 pytest==8.2.0
 pytest-cov==5.0.0
 setuptools==69.5.1
--e git+https://gitlab.informatika.org/novelxv/if2250-2024-k02-g11-wanderwise.git@dbef84bcacb44ae71bd7a2a94b20214a0e0b16ae#egg=WanderWise
--e git+https://gitlab.informatika.org/novelxv/if2250-2024-k02-g11-wanderwise.git@dbef84bcacb44ae71bd7a2a94b20214a0e0b16ae#egg=Your_Project_Name
