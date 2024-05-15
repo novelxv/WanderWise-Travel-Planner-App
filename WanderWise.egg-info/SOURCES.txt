@@ -1,0 +1,10 @@
+README.md
+setup.py
+WanderWise.egg-info/PKG-INFO
+WanderWise.egg-info/SOURCES.txt
+WanderWise.egg-info/dependency_links.txt
+WanderWise.egg-info/top_level.txt
+tests/__init__.py
+tests/utils/__init__.py
+tests/utils/mymath/__init__.py
+tests/utils/mymath/test_addition.py
