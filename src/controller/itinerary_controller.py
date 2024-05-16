@@ -1,8 +1,9 @@
-from database import *
+from database.database import *
 from models.itinerary import *
 
 class ItineraryController:
     def __init__(self):
+        # Itinerary class constructor,connects instance to database
         conn,cursor = connect_db()
         self.conn = conn
         self.cursor = cursor

@@ -1,4 +1,4 @@
-from database import *
+from database.database import *
 from models.artikel import *
 
 class ArtikelController:
