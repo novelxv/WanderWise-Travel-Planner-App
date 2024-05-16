@@ -6,13 +6,13 @@ class FloatingAddButton(QtWidgets.QPushButton):
         self.icon_path = icon_path
         self.position = position
         self.setIcon(QtGui.QIcon(self.icon_path))  # Set the icon
-        self.setIconSize(QtCore.QSize(25, 25))  # Set the icon size
+        self.setIconSize(QtCore.QSize(90, 90))  # Set the icon size
 
         self.setStyleSheet(f"""
             QPushButton {{
                 background-color: #FF5D00;  /* Button color */
-                border-radius: 20px;  /* Make it circular */
-                border: none;
+                border-radius: 75px;  /* Make it circular */
+                border: 10px solid;
             }}
             QPushButton:hover {{
                 background-color: #cc4a00;  /* Darker color on hover */
@@ -21,7 +21,7 @@ class FloatingAddButton(QtWidgets.QPushButton):
                 background-color: #993800;  /* Even darker color when pressed */
             }}
         """)
-        self.setFixedSize(40, 40)  # Set the fixed size for the button
+        self.setFixedSize(150, 150)  # Set the fixed size for the button
 
     def setFloatingPosition(self):
         parent = self.parent()

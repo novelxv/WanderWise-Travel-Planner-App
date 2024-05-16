@@ -11,15 +11,15 @@ class CalendarDialog(QDialog):
 
     def initUI(self):
         self.setWindowTitle('Calendar Picker')
-        self.setGeometry(300, 300, 350, 300)  # Adjust window position and size
+        self.setGeometry(300, 300, 350, 300)  
 
         # Layout
         layout = QVBoxLayout()
 
         # Create a Calendar Widget
         self.calendar = QCalendarWidget(self)
-        self.calendar.setGridVisible(True)  # Show grid lines
-        self.calendar.clicked.connect(self.accept)  # Close dialog on date click
+        self.calendar.setGridVisible(True)  
+        self.calendar.clicked.connect(self.accept) 
 
         # Adding widgets to layout
         layout.addWidget(self.calendar)
@@ -33,12 +33,12 @@ class CalendarDialog(QDialog):
 class CalendarPicker(QWidget):
     def __init__(self):
         super().__init__()
-        self.selected_date = None  # Variable to store selected date
+        self.selected_date = None  
         self.initUI()
 
     def initUI(self):
         self.setWindowTitle('Calendar Picker')
-        self.setGeometry(300, 300, 100, 50)  # Adjust window position and size
+        self.setGeometry(300, 300, 100, 50)  
 
         # Layout
         layout = QVBoxLayout()
@@ -46,8 +46,8 @@ class CalendarPicker(QWidget):
         # Create a button to show the calendar dialog
         self.button = QPushButton('', self)
         self.button.setIcon(QIcon('img/icons/calendar_icon.svg'))
-        self.button.setIconSize(QSize(32, 32))  # Set icon size
-        self.button.setFixedSize(40, 40)  # Set button size
+        self.button.setIconSize(QSize(32, 32))  
+        self.button.setFixedSize(40, 40) 
         self.button.clicked.connect(self.show_calendar_dialog)
 
         # Adding widgets to layout
