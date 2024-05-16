@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QStackedWidget, QHBoxLayout, QMainWindow, QSizePolicy
-from ui.components.Form.form_row import Form
+# from ui.components.form.form_row import Form
+from ui.pages.article_list import *
 
 class UI(object):
-    def setup(self, parent:QMainWindow):
+    def setup(self, parent:QMainWindow, destinations, articles):
         parent.setObjectName("Window")
 
         app = QApplication.instance()
@@ -27,10 +28,11 @@ class UI(object):
 
         # add stacked widget to window
         parent.last_page_idx = 0
-        form = Form(True, "Destination", "destination", parent)
-        parent.stacked_widget.form_widget = form
+        # form = Form(True, "Destination", "destination", parent)
+        arc_list = articleList(articles, parent)
+        parent.stacked_widget.form_widget = arc_list
 
-        content_container.addWidget(form)
+        content_container.addWidget(arc_list)
 
         parent.setCentralWidget(self.central_widget)
         layout = QHBoxLayout(self.central_widget)
