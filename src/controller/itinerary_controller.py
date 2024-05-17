@@ -1,5 +1,5 @@
-from database.database import *
-from models.itinerary import *
+from src.database.database import *
+from src.models.itinerary import *
 
 class ItineraryController:
     def __init__(self):
@@ -25,8 +25,19 @@ class ItineraryController:
     
     def get_destinasi_detail_by_tanggal(self, id, tanggal):
         self.cursor.execute('SELECT * FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=? AND tanggal=?', (id,tanggal,))
-        destinasidetail = self.cursor.fetchone()
+        destinasidetail = self.cursor.fetchall()
         return destinasidetail
+    
+    def get_lokasi_by_tanggal(self, id, tanggal):
+        self.cursor.execute('SELECT lokasi FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=? AND tanggal=?', (id,tanggal,))
+        destinasidetail = self.cursor.fetchall()
+        return destinasidetail
+    
+    def get_tanggal_itinerary(self, id):
+        self.cursor.execute('SELECT tanggal FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=?', (id,))
+        tanggals = self.cursor.fetchall()
+        tanggal = [t[0] for t in tanggals]
+        return tanggal
     
     def add_itinerary(self, destinasi_id, lokasi, tanggal, waktu_mulai, waktu_selesai, biaya, transportasi, catatan):
         self.cursor.execute(

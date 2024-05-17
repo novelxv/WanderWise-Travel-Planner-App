@@ -1,5 +1,5 @@
-from database.database import *
-from models.destinasi import *
+from src.database.database import *
+from src.models.destinasi import *
 
 class DestinasiController:
     def __init__(self):
@@ -19,13 +19,13 @@ class DestinasiController:
     def get_destinasi_by_id(self, id):
         result = self.cursor.execute('SELECT * FROM t_destinasi WHERE destinasi_id=?', (id,)).fetchone()
         if result is not None:
-            return Destinasi((result[0], result[1], result[2], result[3], result[4], result[5], result[6]))
+            return Destinasi(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
         else:
             return None
     
     # get all destinasi from t_destinasi with the corresponding kategori
     def get_destinasi_by_kategory(self, kategori):
-        result = self.cursor.execute('SELECT * FROM t_destinasi WHERE kategori=?', (kategori,)).fetchone
+        result = self.cursor.execute('SELECT * FROM t_destinasi WHERE kategori=?', (kategori,)).fetchone()
         if result is not None:
             return Destinasi(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
         else:

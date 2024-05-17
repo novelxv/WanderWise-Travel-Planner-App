@@ -1,5 +1,5 @@
-from database.database import *
-from models.artikel import *
+from src.database.database import *
+from src.models.artikel import *
 
 class ArtikelController:
     def __init__(self):

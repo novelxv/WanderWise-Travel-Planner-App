@@ -23,7 +23,6 @@ class articleList(QWidget):
         bgLabel.setPixmap(pixmap)
         bgLabel.setScaledContents(True)
         bgLabel.setGeometry(0, 0, self.width(), self.height())
-
     
         # set boxes of list
         # content_layout = QVBoxLayout()
