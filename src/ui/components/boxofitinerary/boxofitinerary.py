@@ -20,7 +20,7 @@ class ScheduleWidget(QtWidgets.QWidget):
                 background-color: #FFF9ED;
             }
         """)
-
+        
         # Header Tanggal
         self.header_label = QtWidgets.QLabel(header)
         self.header_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
