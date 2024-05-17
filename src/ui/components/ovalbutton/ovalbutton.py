@@ -12,7 +12,7 @@ class OvalButton(QtWidgets.QPushButton):
                 color: black;
                 border: none;
                 padding: 10px 20px;
-                font-size: 14px;
+                font-size: 20px;
                 font-weight: bold;
                 border-radius: {self.border_radius}px; 
             }}
