@@ -17,7 +17,6 @@ class Window(QMainWindow):
         self.artikel_controller = ArtikelController()
         self.destinasi_controller = DestinasiController()
         self.itinerary_controller = ItineraryController()
-
         # setup articles and destination
         self.articles = self.artikel_controller.get_all_artikel()
         self.destinasi = self.destinasi_controller.get_all_destinasi()

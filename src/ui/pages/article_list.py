@@ -1,13 +1,13 @@
 import os
-from ui.components.destinationscard.cards import Cards
+from ui.components.articlecard.cards import Cards
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap
 
-class articleList(QWidget):
+class ArticleList(QWidget):
     def __init__(self, articles, parent=None):
         super().__init__()
         self.parent = parent
-        # self.stacked_widget = parent.stacked_widget if parent else None
+        self.stacked_widget = parent.stacked_widget if parent else None
 
         # Set page size
         parentWidth = parent.width() if parent else 1240
@@ -24,10 +24,7 @@ class articleList(QWidget):
         bgLabel.setScaledContents(True)
         bgLabel.setGeometry(0, 0, self.width(), self.height())
     
-        # set boxes of list
-        # content_layout = QVBoxLayout()
         cards = Cards(articles, len(articles), BASE_URL, self)
-        # content_layout.addWidget(cards)
 
         # set footer
 
