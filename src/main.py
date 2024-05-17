@@ -4,6 +4,9 @@ from ui.ui_main import UI
 from controller.artikel_controller import *
 from controller.destinasi_controller import *
 from controller.itinerary_controller import *
+from PyQt5.QtGui import QPixmap, QPalette, QBrush
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QLabel
 
 class Window(QMainWindow):
     artikel_controller = ArtikelController
@@ -24,9 +27,14 @@ class Window(QMainWindow):
 
         # setup UI
         self.setWindowTitle("Wanderwise")
+        # Set background image
+        pixmap = QPixmap('img/bg/window_bg.png')
+        palette = QPalette()
+        palette.setBrush(QPalette.Background, QBrush(pixmap))
+        self.setPalette(palette)
+
         self.ui = UI()
         self.ui.setup(self, self.destinasi, self.articles)
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
