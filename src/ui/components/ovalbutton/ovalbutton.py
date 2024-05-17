@@ -10,7 +10,7 @@ class OvalButton(QtWidgets.QPushButton):
             QPushButton {{
                 background-color: {self.color.name()};
                 color: black;
-                border: none;
+                border: 5px solid black;
                 padding: 10px 20px;
                 font-size: 20px;
                 font-weight: bold;
@@ -28,7 +28,7 @@ class OvalButton(QtWidgets.QPushButton):
 class OvalButtonIcon(QtWidgets.QPushButton):
     def __init__(self, text, icon, color, border_radius, parent=None):
         super().__init__(text, parent)
-        self.setFixedSize(200, 80)  # Set fixed size for the button
+        self.setFixedSize(140, 80)  # Set fixed size for the button
         self.color = QtGui.QColor(color)
         self.border_radius = border_radius
         self.setIcon(QtGui.QIcon(icon))
