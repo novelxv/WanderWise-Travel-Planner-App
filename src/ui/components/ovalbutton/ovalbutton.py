@@ -28,7 +28,7 @@ class OvalButton(QtWidgets.QPushButton):
 class OvalButtonIcon(QtWidgets.QPushButton):
     def __init__(self, text, icon, color, border_radius, parent=None):
         super().__init__(text, parent)
-        self.setFixedSize(200, 80)  # Set fixed size for the button
+        self.setFixedSize(140, 80)  # Set fixed size for the button
         self.color = QtGui.QColor(color)
         self.border_radius = border_radius
         self.setIcon(QtGui.QIcon(icon))
