@@ -8,7 +8,7 @@ class ArticleCard(QWidget):
         super().__init__(parent)
         # self.stacked_widget = parent.stacked_widget
         self.content = text
-
+        
         # Set image
         self.image = QLabel()
         self.image.setPixmap(QPixmap(icon_path))
@@ -38,7 +38,6 @@ class ArticleCard(QWidget):
             #article_title {
                 background-color: #FFC800;
                 padding-top: 10px;
-                color: black;
                 font: 25px bold;
                 border: 5px solid black;
                 border-top : 0;

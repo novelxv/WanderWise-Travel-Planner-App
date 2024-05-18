@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QToolButton, QLabel, QVBoxLayout, QSizePolicy
-from PyQt5.QtGui import QIcon, QPixmap, QCursor
+from PyQt5.QtGui import QIcon, QCursor, QPixmap
 from PyQt5.QtCore import QSize, Qt
 
 class CustomButton(QWidget):
@@ -13,7 +13,8 @@ class CustomButton(QWidget):
 
         # Set button icon
         self.button = QToolButton()
-        self.button.setIcon(QIcon(icon_path))
+        pixmap = QPixmap(icon_path).scaled(width, int(0.5 * width), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+        self.button.setIcon(QIcon(pixmap))
         self.button.setIconSize(QSize(width, int(0.5 * width)))  # Adjust size as needed
         self.button.setCursor(QCursor(Qt.PointingHandCursor))
         self.button.setToolButtonStyle(Qt.ToolButtonIconOnly)
@@ -23,9 +24,8 @@ class CustomButton(QWidget):
                 margin: 0px;
                 border-top-right-radius: 10px;
                 border-top-left-radius: 10px;
-                                  
+                background: none;
             }
-
         """)
         self.button.clicked.connect(self.handle_article_click)
         layout.addWidget(self.button)
@@ -38,15 +38,12 @@ class CustomButton(QWidget):
         self.label.setStyleSheet("""
             QLabel {
                 background-color: #FFC800;
-                padding-top: 10px;
                 color: black;
                 font: 25px bold;
                 border: 5px solid black;
-                border-top : 0;
+                border-top: 0;
                 border-bottom-left-radius: 10px;
                 border-bottom-right-radius: 10px;
-                border-top-left-radius: 0;
-                border-top-right-radius: 0;
                 margin: 0px;
             }
         """)
@@ -57,4 +54,3 @@ class CustomButton(QWidget):
 
     def handle_article_click(self, event):
         print("clicked")
-
