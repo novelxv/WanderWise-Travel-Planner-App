@@ -1,7 +1,8 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QWidget
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QWidget, QFrame
 from src.ui.components.addbutton.addbutton import FloatingAddButton
 from src.ui.components.ovalbutton.ovalbutton import OvalButtonIcon
+from src.ui.components.destinationscard.destinationscard import *
 from src.ui.pages.form_add_destination import FormAddDestination
 import sys
 from PyQt5.QtCore import Qt
@@ -39,7 +40,7 @@ class ListOfDestinations(QWidget):
         done_button = OvalButtonIcon("Done", None, "#00A6FF", 40)
 
         buttons_layout = QtWidgets.QHBoxLayout()
-        buttons_layout.setSpacing(10)  # Set spacing between buttons
+        buttons_layout.setSpacing(15)  # Set spacing between buttons
 
         buttons_layout.addWidget(idea_button)
         buttons_layout.addWidget(plan_button)
@@ -60,22 +61,44 @@ class ListOfDestinations(QWidget):
         # Main layout
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.addLayout(top_layout)
-        
-        spacer = QSpacerItem(800, 800, QSizePolicy.Minimum, QSizePolicy.Fixed)
-        self.layout.addItem(spacer)
-        
-        self.setLayout(self.layout)
+
+        # Scroll area setup
+        scroll_area = QtWidgets.QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)  # Hide vertical scroll bar
+        scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)  # Hide horizontal scroll bar
+        self.layout.addWidget(scroll_area)
+
+        # Scroll content
+        scroll_content = QtWidgets.QWidget()
+        self.grid_layout = QtWidgets.QGridLayout(scroll_content)
+        self.grid_layout.setVerticalSpacing(40)
+        scroll_area.setWidget(scroll_content)
 
         # Add the floating add button
-        self.add_button = FloatingAddButton(self, position=(20, 20))
+        self.add_button = FloatingAddButton(self, position=(157, 170))
         self.add_button.clicked.connect(self.show_add_destination_form)
-        
+        self.add_button.setFloatingPosition()  # Ensure it is positioned correctly
+
+        # Populate the grid layout with destination cards
+        for index, destination in enumerate(self.destinations):
+            icon_path = "img/icons/destination.jpg"
+            text = destinations[index]  
+            width = 400  # Set the width for each card
+            print(destinations[index])
+            card = CustomButton(icon_path, text, width)
+            row = index // 3
+            col = index % 3
+            self.grid_layout.addWidget(card, row, col)
+            card.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+
+        self.setLayout(self.layout)
+
     def show_add_destination_form(self):
         self.add_destination_form = FormAddDestination(self)
         self.add_destination_form.setWindowModality(Qt.ApplicationModal)
         self.add_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
         self.add_destination_form.show()
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     main_window = QtWidgets.QMainWindow()

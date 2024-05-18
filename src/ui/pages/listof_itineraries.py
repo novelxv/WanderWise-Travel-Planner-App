@@ -1,13 +1,22 @@
 import sys
+from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayout
 from src.ui.components.boxofitinerary.boxofitinerary import *
 from src.ui.components.addbutton.addbutton import *
+from src.ui.pages.form_add_itinerary import *
 class Listof_Itineraries(QtWidgets.QMainWindow):
-    def __init__(self, trip, headers, list_of_places, list_of_hours):
-        super().__init__()
-        self.setWindowTitle("Test Itinerary with Floating Add Button")
+    def __init__(self, trip, headers, list_of_places, list_of_hours, main_window=None):
+        super().__init__(main_window)
+        self.main_window = main_window
+        self.stacked_widget = main_window.stacked_widget
         self.setGeometry(100, 100, 800, 600)
+
+        main_window_width = main_window.width()
+        main_window_height = main_window.height()
+        self.setFixedWidth(main_window_width)
+        self.setFixedHeight(main_window_height)
+
 
         self.central_widget = QtWidgets.QWidget()
         self.setCentralWidget(self.central_widget)
@@ -62,11 +71,18 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
             self.grid_layout.addWidget(schedule_widget, row, col)
             schedule_widget.clicked.connect(lambda index=index: self.handleScheduleWidgetClick(index))
             schedule_widget.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.add_button = FloatingAddButton(self.central_widget, position=(10, 10))
-        self.add_button.setFloatingPosition()
-
+        # Add the floating add button
+        self.add_button = FloatingAddButton(self, position=(20, 20))
+        self.add_button.clicked.connect(self.show_add_itinerary_form)
+        
         self.resizeEvent = lambda event: self.add_button.setFloatingPosition()
     
+    def show_add_itinerary_form(self):
+        self.add_destination_form = FormAddItinerary(self)
+        self.add_destination_form.setWindowModality(Qt.ApplicationModal)
+        self.add_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
+        self.add_destination_form.show()
+
     def handleScheduleWidgetClick(self, index):
         print("Clicked ScheduleWidget at index:", index)
 

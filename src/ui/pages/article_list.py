@@ -1,7 +1,9 @@
 import os
-from ui.components.articlecard.cards import Cards
+from src.ui.components.articlecard.cards import Cards
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap
+from PyQt5 import QtWidgets, QtGui, QtCore
+
 
 class ArticleList(QWidget):
     def __init__(self, articles, parent=None):
@@ -15,22 +17,34 @@ class ArticleList(QWidget):
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
 
-        # Set background image
-        BASE_URL = '../img/'
-        path = os.path.abspath(BASE_URL+'icons/List_of_Articles.png')
-        bgLabel = QLabel(self)
-        pixmap = QPixmap(path)
-        bgLabel.setPixmap(pixmap)
-        bgLabel.setScaledContents(True)
-        bgLabel.setGeometry(0, 0, self.width(), self.height())
-    
+        BASE_URL = 'img/'
+        
+        # Create the header label
+        self.header_itinerary_label = QtWidgets.QLabel("ARTICLES")
+        self.header_itinerary_label.setStyleSheet("""
+            QLabel {
+                font: 35px bold;
+                text-align: left;
+                color: #000000;
+                padding: none;
+            }
+        """)
+        
+        # Create the top layout and add the header label
+        top_layout = QtWidgets.QHBoxLayout()
+        top_layout.addWidget(self.header_itinerary_label)
+        top_layout.addStretch()  # Ensure the label is aligned to the left
+
+        # Create the cards
         cards = Cards(articles, len(articles), BASE_URL, self)
 
-        # set footer
-
-        # set layout
+        # Create the main layout and add the top layout and cards
         layout = QVBoxLayout(self)
+        layout.addLayout(top_layout)
         layout.addWidget(cards)
 
-        layout.setContentsMargins(0,0,0,0)
+        # Adjust layout margins and spacings
+        layout.setSpacing(0)
+
+        # Set the main layout for the widget
         self.setLayout(layout)

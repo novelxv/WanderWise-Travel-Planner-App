@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import QSize, Qt
 
 class ArticleCard(QWidget):
-    def __init__(self, icon_path, text, width, parent=None):
+    def __init__(self, icon_path, text, width, height, parent=None):
         super().__init__(parent)
         # self.stacked_widget = parent.stacked_widget
         self.content = text
@@ -14,13 +14,16 @@ class ArticleCard(QWidget):
         self.image.setPixmap(QPixmap(icon_path))
         self.image.setScaledContents(True)
         self.image.setMargin(0)
-        self.image.setFixedWidth(width)
+
         self.image.setObjectName("image_article")
         self.image.setStyleSheet("""
             #image_article {
                 background-color: #FFC800;
-                border: 2px solid black;
+                border: 5px solid black;
                 margin: 0px;
+                border-top-right-radius: 10px;
+                border-top-left-radius: 10px;
+                width: 100px;
             }
         """)
         self.setCursor(QCursor(Qt.PointingHandCursor))
@@ -29,7 +32,6 @@ class ArticleCard(QWidget):
         # Set button text
         text = text[:80]+"\n"+text[80:]
         self.title = QPushButton()
-        self.title.setFixedWidth(width)
         self.title.setText(text)
         self.title.setObjectName("article_title")
         self.title.setStyleSheet("""
@@ -37,8 +39,8 @@ class ArticleCard(QWidget):
                 background-color: #FFC800;
                 padding-top: 10px;
                 color: black;
-                font-size: 15px;
-                border: 2px solid black;
+                font: 25px bold;
+                border: 5px solid black;
                 border-top : 0;
                 border-bottom-left-radius: 10px;
                 border-bottom-right-radius: 10px;
@@ -54,7 +56,7 @@ class ArticleCard(QWidget):
         card_layout.setSpacing(0)
         card_layout.addWidget(self.image)
         card_layout.addWidget(self.title)
-        self.setFixedSize(QSize(width, int(0.6 * width)))
+        self.setFixedSize(QSize(width, height))
         self.setLayout(card_layout)
         self.setContentsMargins(0,0,0,0)
 

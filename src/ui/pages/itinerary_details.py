@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayout, QGridLayout, QPushButton, QWidget
+from PyQt5.QtWidgets import QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox
 from src.ui.components.ovalbutton.ovalbutton import *
 
 class Itinerary_Details(QtWidgets.QMainWindow):
@@ -74,12 +74,6 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.grid_layout.addWidget(self.image_label, 0, 0, 1, 1)
         self.image_label.setAlignment(Qt.AlignLeft)
 
-        # Adding the ticket image
-        self.ticket_label = QLabel()
-        imagelink = "img/icons/Tickets.png"
-        self.ticket_label.setPixmap(QtGui.QPixmap(imagelink).scaled(300, 300, QtCore.Qt.KeepAspectRatio))
-        self.grid_layout.addWidget(self.ticket_label, 0, 1, 0, 0)
-
         # Adding description
         self.description_label = QLabel(location_desc)
         self.description_label.setAlignment(Qt.AlignCenter)  # Align the description label to the center
@@ -101,16 +95,21 @@ class Itinerary_Details(QtWidgets.QMainWindow):
             self.notes_label.setWordWrap(True)
             self.notes_label.setStyleSheet("font-size: 26px; padding: 20px; background-color: #FFFFFF;")
             self.grid_layout.addWidget(self.notes_label, 1, 1, 1, 1)
-
         # Adding Ticket Information
         self.ticket_info_label = QLabel(f"Tickets: {ticket}")
         self.ticket_info_label.setStyleSheet("font-size: 18px; padding: 20px;")
-        self.grid_layout.addWidget(self.ticket_info_label, 2, 0, 1, 1)
+        self.grid_layout.addWidget(self.ticket_info_label, 2, 0, 1, 2)
 
-        # Adding Transport Information
+        # Adding a group box for transportation information
+        self.transport_group_box = QGroupBox("Transportation")
+        self.transport_group_box.setStyleSheet("font-size: 18px; padding: 20px;")
+        self.transport_group_box.setAlignment(Qt.AlignLeft)
+        self.transport_layout = QVBoxLayout()
         self.transport_label = QLabel(f"Transport: {transport}")
-        self.transport_label.setStyleSheet("font-size: 18px; padding: 20px;")
-        self.grid_layout.addWidget(self.transport_label, 2, 1, 1, 1)
+        self.transport_layout.addWidget(self.transport_label)
+        self.transport_group_box.setLayout(self.transport_layout)
+        self.grid_layout.addWidget(self.transport_group_box, 3, 0, 1, 1)
+
 
         # Connect button signals to handlers
         self.edit_button.clicked.connect(self.handle_edit_button_click)

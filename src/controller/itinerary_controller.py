@@ -19,8 +19,8 @@ class ItineraryController:
         return itinerary
     
     def get_destinasi_detail(self, id):
-        self.cursor.execute('SELECT * FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=?', (id,))
-        destinasidetail = self.cursor.fetchone()
+        self.cursor.execute('SELECT itinerary_id, destinasi_id, lokasi, tanggal, waktu_mulai, waktu_selesai, biaya, transportasi, catatan   FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=?', (id,))
+        destinasidetail = self.cursor.fetchall()
         return destinasidetail
     
     def get_destinasi_detail_by_tanggal(self, id, tanggal):
