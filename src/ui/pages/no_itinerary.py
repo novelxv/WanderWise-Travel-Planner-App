@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushBut
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 
-class DestinationsPage(QWidget):
+class ItinerariesPage(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -73,6 +73,6 @@ class DestinationsPage(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = DestinationsPage()
+    window = ItinerariesPage()
     window.show()
     sys.exit(app.exec_())

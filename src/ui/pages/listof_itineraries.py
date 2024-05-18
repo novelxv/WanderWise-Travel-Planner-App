@@ -72,8 +72,6 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
 
     # def handleAddButtonClick(self):
 
-    def handleButtonEditClick(self)
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     

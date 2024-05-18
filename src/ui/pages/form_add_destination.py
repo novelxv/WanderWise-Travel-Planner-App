@@ -18,7 +18,7 @@ class FormAddDestination(QWidget):
         parentHeight = parent.height() if parent else 793
 
         # Set dashboard size
-        self.setFixedWidth(int(0.7 * parentWidth))
+        self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
         self.file_name = ""
 
