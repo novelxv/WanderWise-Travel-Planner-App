@@ -32,7 +32,7 @@ class UI(object):
         parent.last_page_idx = 0
         home_widget = HomePage(parent)
         article_list_widget = ArticleList(articles, parent)
-        destination_list_widget = ListOfDestinations(parent)
+        destination_list_widget = ListOfDestinations(destinations, parent)
         parent.stacked_widget.form_widget = article_list_widget
 
         content_container.addWidget(home_widget) #PAGE 0

@@ -1,10 +1,10 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel, QPushButton
 from PyQt5.QtGui import QPixmap
-from src.ui.components.calendar.calendar_picker import *
-from src.ui.components.dropdown.dropdown import *
-from src.ui.components.ovalbutton.ovalbutton import *
+from src.ui.components.calendar.calendar_picker import CalendarPicker
+from src.ui.components.dropdown.dropdown import DropDown
+from src.ui.components.ovalbutton.ovalbutton import OvalButton
 from src.ui.components.Form.form_box import FormBox
 
 class FormAddDestination(QWidget):
@@ -18,7 +18,7 @@ class FormAddDestination(QWidget):
         parentHeight = parent.height() if parent else 793
 
         # Set dashboard size
-        self.setFixedWidth(int(0.9 * parentWidth))
+        self.setFixedWidth(int(0.7 * parentWidth))
         self.setFixedHeight(parentHeight)
         self.file_name = ""
 
@@ -75,7 +75,7 @@ class FormAddDestination(QWidget):
         form_box_destination.move(100, 290)
 
         # Add DropDown instance For Category
-        drop_down = DropDown(option_type="category", button_text = "Category", parent=self)
+        drop_down = DropDown(option_type="category", button_text="Category", parent=self)
         drop_down.setParent(content_widget)
         drop_down.raise_()
         drop_down.move(100, 400)
@@ -91,10 +91,18 @@ class FormAddDestination(QWidget):
         form_box_budget.move(100, 625)
 
         # Add the oval button done for submitting the form
-        oval_button = OvalButton("Done", "#69C99E", 35, self)
-        oval_button.setParent(content_widget)
-        oval_button.setFixedSize(149, 70)
-        oval_button.move(450, 700)
+        oval_button_done = OvalButton("Done", "#69C99E", 35, self)
+        oval_button_done.setParent(content_widget)
+        oval_button_done.setFixedSize(149, 70)
+        oval_button_done.move(450, 800)
+        oval_button_done.clicked.connect(self.close_form)  # Connect the done button to close the form
+
+        # Add the cancel button for closing the form
+        cancel_button = OvalButton("Cancel", "#FF5D00", 35, self)
+        cancel_button.setParent(content_widget)
+        cancel_button.setFixedSize(149, 70)
+        cancel_button.move(620, 800)
+        cancel_button.clicked.connect(self.close_form)  # Connect the cancel button to close the form
 
         # Adding the scroll area to the main layout
         main_layout = QVBoxLayout(container)
@@ -104,11 +112,11 @@ class FormAddDestination(QWidget):
         # Set the layout for the main widget
         self.setLayout(main_layout)
 
-def main():
+    def close_form(self):
+        self.close()
+
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     form_add_destination = FormAddDestination()
     form_add_destination.show()
     sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()

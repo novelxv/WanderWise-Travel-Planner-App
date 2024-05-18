@@ -1,10 +1,10 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QWidget, QGridLayout, QStackedWidget
-from PyQt5.QtGui import QPixmap, QPalette, QBrush
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QWidget
 from src.ui.components.addbutton.addbutton import FloatingAddButton
 from src.ui.components.ovalbutton.ovalbutton import OvalButtonIcon
+from src.ui.pages.form_add_destination import FormAddDestination
 import sys
+from PyQt5.QtCore import Qt
 
 class ListOfDestinations(QWidget):
     def __init__(self, destinations, main_window=None):
@@ -23,7 +23,7 @@ class ListOfDestinations(QWidget):
         self.setFixedHeight(main_window_height)
 
         # Header
-        self.header_itinerary_label = QtWidgets.QLabel("All Destinations")
+        self.header_itinerary_label = QtWidgets.QLabel("ALL DESTINATIONS")
         self.header_itinerary_label.setStyleSheet("""
             QLabel {
                 font: bold 35px;
@@ -31,7 +31,7 @@ class ListOfDestinations(QWidget):
                 color: #000080;
             }
         """)
-        
+
         # Create a layout for the buttons
         idea_button = OvalButtonIcon("Idea", None, "#C5E5C0", 40)
         plan_button = OvalButtonIcon("Plan", None, "#FFCF52", 40)
@@ -65,3 +65,23 @@ class ListOfDestinations(QWidget):
         self.layout.addItem(spacer)
         
         self.setLayout(self.layout)
+
+        # Add the floating add button
+        self.add_button = FloatingAddButton(self, position=(20, 20))
+        self.add_button.clicked.connect(self.show_add_destination_form)
+        
+    def show_add_destination_form(self):
+        self.add_destination_form = FormAddDestination(self)
+        self.add_destination_form.setWindowModality(Qt.ApplicationModal)
+        self.add_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
+        self.add_destination_form.show()
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    main_window = QtWidgets.QMainWindow()
+    main_window.setFixedSize(800, 600)  # Example size for the main window
+    destinations = []  # Example destinations list
+    widget = ListOfDestinations(destinations, main_window)
+    main_window.setCentralWidget(widget)
+    main_window.show()
+    sys.exit(app.exec_())
