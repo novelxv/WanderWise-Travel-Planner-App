@@ -39,3 +39,6 @@ class FormBox(QWidget):
     
     def setText(self, text):
         self.field.setText(text)
+
+    def getText(self):
+        return self.field.toPlainText()

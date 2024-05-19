@@ -80,5 +80,4 @@ class DropDown(QtWidgets.QWidget):
 
     def set_button_text(self, text):
         self.dropdown_button.setText(text)
-
-
+        self.selected_option = text

@@ -3,13 +3,14 @@ import os
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap
-from src.ui.components.calendar.calendar_picker import *
-from src.ui.components.dropdown.dropdown import *
-from src.ui.components.ovalbutton.ovalbutton import *
+from src.ui.components.calendar.calendar_picker import CalendarPicker
+from src.ui.components.dropdown.dropdown import DropDown
+from src.ui.components.ovalbutton.ovalbutton import OvalButton
 from src.ui.components.Form.form_box import FormBox
 
 class FormAddDestination(QWidget):
-    done_signal = QtCore.pyqtSignal()
+    done_signal = pyqtSignal(list)  # Ubah sinyal untuk mengirimkan data sebagai list
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
@@ -74,37 +75,38 @@ class FormAddDestination(QWidget):
         calendar_picker_end.move(805, 185)
 
         # Add the FormBox instance For destination
-        form_box_destination = FormBox("Jakarta", self, 950)
-        form_box_destination.setParent(content_widget)
-        form_box_destination.move(100, 290)
+        self.form_box_destination = FormBox("Jakarta", self, 950)
+        self.form_box_destination.setParent(content_widget)
+        self.form_box_destination.move(100, 290)
 
         # Add DropDown instance For Category
-        drop_down = DropDown(option_type="category", button_text = "Category", parent=self)
-        drop_down.setParent(content_widget)
-        drop_down.move(90, 405)
+        self.drop_down = DropDown(option_type="category", button_text="Category", parent=self)
+        self.drop_down.setParent(content_widget)
+        self.drop_down.move(90, 405)
 
         # Add the FormBox instance For savings
-        form_box_savings = FormBox("XX XXX XXX", self, 950)
-        form_box_savings.setParent(content_widget)
-        form_box_savings.move(100, 510)
+        self.form_box_savings = FormBox("XX XXX XXX", self, 950)
+        self.form_box_savings.setParent(content_widget)
+        self.form_box_savings.move(100, 510)
 
         # Add the FormBox instance For budget
-        form_box_budget = FormBox("XX XXX XXX", self, 950)
-        form_box_budget.setParent(content_widget)
-        form_box_budget.move(100, 625)
+        self.form_box_budget = FormBox("XX XXX XXX", self, 950)
+        self.form_box_budget.setParent(content_widget)
+        self.form_box_budget.move(100, 625)
 
         # Add the oval button done for submitting the form
-        oval_button = OvalButton("Done", "#69C99E", 35, self)
-        oval_button.setParent(content_widget)
-        oval_button.setFixedSize(149, 70)
-        oval_button.move(350, 700)
-        oval_button.clicked.connect(self.done_button_clicked)
+        oval_button_done = OvalButton("Done", "#69C99E", 35, self)
+        oval_button_done.setParent(content_widget)
+        oval_button_done.setFixedSize(149, 70)
+        oval_button_done.move(350, 700)
+        oval_button_done.clicked.connect(self.done_button_clicked)
 
-        oval_button = OvalButton("Close", "#69C99E", 35, self)
-        oval_button.setParent(content_widget)
-        oval_button.setFixedSize(149, 70)
-        oval_button.move(500, 700)
-        oval_button.clicked.connect(self.close_form)
+        # Add the cancel button for closing the form
+        oval_button_cancel = OvalButton("Close", "#FF5D00", 35, self)
+        oval_button_cancel.setParent(content_widget)
+        oval_button_cancel.setFixedSize(149, 70)
+        oval_button_cancel.move(500, 700)
+        oval_button_cancel.clicked.connect(self.close_form)
 
         # Adding the scroll area to the main layout
         main_layout = QVBoxLayout(container)
@@ -121,8 +123,16 @@ class FormAddDestination(QWidget):
         self.form_box_edate.setText(date.toString("dd/MM/yy"))
     
     def done_button_clicked(self):
-        self.done_signal.emit()
-        print("Done button clicked")
+        destination_data = [
+            self.form_box_destination.getText(),
+            self.drop_down.currentText(),
+            self.form_box_sdate.getText(),
+            self.form_box_edate.getText(),
+            int(self.form_box_budget.getText().replace(' ', '')),
+            int(self.form_box_savings.getText().replace(' ', ''))
+        ]
+        self.done_signal.emit(destination_data)
+        print("Done button clicked", destination_data)
         self.close_form()
 
     def close_form(self):
