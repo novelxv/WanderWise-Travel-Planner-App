@@ -75,8 +75,8 @@ pytest
 |         Name           |     NIM    | Contribution |  
 | ---------------------- |  --------- | ------------ | 
 | Novelya Putri Ramadhani|  13522096  | Destination, some component and pages, testing            |   
-|   Kayla Namira Mariadi |  13522050  | Database, controller, form box component, testing             |   
+|   Kayla Namira Mariadi |  13522050  | Database, controller, form box component, Article list, testing             |   
 |    Saad Abdul Hakim    |  13522092  | Management Form, some component and pages, testing             |   
 | Diana Tri Handayani    |  13522104  | Budgeting, Empty Pages,  some component and pages, testing            |   
 | Thea Josephine Halim   |  13522012  | Management Itinerary, some component and pages, testing          |   
-| Zulkifli Ardiansyah    |  10023640  | Halaman Utama, Manajemen Artikel, and some component, testing             |      
+| Zulkifli Ardiansyah    |  10023640  | Homepage, Article details, testing             |      
