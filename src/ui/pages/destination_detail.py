@@ -150,7 +150,7 @@ class DestinationDetail(QWidget):
 
     def handle_edit_button_click(self):
         print("Edit button clicked!")
-        self.edit_destination_form = FormEditDestination(self)
+        self.edit_destination_form = FormEditDestination(self.main_window)
         self.edit_destination_form.done_signal.connect(self.on_done_signal)  # Connect the signal
         self.edit_destination_form.setWindowModality(Qt.ApplicationModal)
         self.edit_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
@@ -158,7 +158,7 @@ class DestinationDetail(QWidget):
 
     def handle_delete_button_click(self):
         print("Delete button clicked!")
-        self.destinasi_controller.delete_destinasi(destination_id)
+        self.destinasi_controller.delete_destinasi(self.destination_id)
         self.main_window.stacked_widget.setCurrentIndex(3)
 
     def handle_budgeting_button_click(self):
@@ -179,37 +179,9 @@ class DestinationDetail(QWidget):
     def on_done_signal(self, edited_destination):
         for i in range(6): # debug
             print(edited_destination[i]) # debug
-        self.destinasi_controller.edit_destinasi(destination_id, edited_destination[0], edited_destination[1], edited_destination[2], edited_destination[3], edited_destination[4], edited_destination[5])
-        self.refresh_destinations()
-        self.show_all_destinations()
-
-    def refresh_destinations(self, destinations=None):
-        if destinations is None:
-            destinations = self.destinations
-
-        # Clear the existing cards
-        for i in reversed(range(self.grid_layout.count())): 
-            self.grid_layout.itemAt(i).widget().setParent(None)
-
-        # Get the latest destinations data
-        self.destinations = self.destinasi_controller.get_all_destinasi()
-
-        # Populate the grid layout with destination cards
-        for index, destination in enumerate(destinations):
-            print("ID", destination.destinasi_id)
-            icon_path = "img/icons/destination.jpg"
-            text = destination.nama  
-            width = 400  # Set the width for each card
-            card = CustomButton(icon_path, text, width, destination.destinasi_id)
-            card.clicked_with_id.connect(self.open_destination_detail)
-            row = index // 3
-            col = index % 3
-            self.grid_layout.addWidget(card, row, col)
-            card.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-
-    def show_all_destinations(self):
-        self.refresh_destinations()
-
+        self.destinasi_controller.edit_destinasi(self.destination_id, edited_destination[0], edited_destination[1], edited_destination[2], edited_destination[3], edited_destination[4], edited_destination[5])
+        self.main_window.stacked_widget.setCurrentIndex(3)
+        
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     main_window = QtWidgets.QMainWindow()
