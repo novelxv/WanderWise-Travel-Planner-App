@@ -144,28 +144,53 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         self.controller.add_itinerary(self.destination_id, itinerary_data[0], itinerary_data[1], itinerary_data[2], itinerary_data[3], itinerary_data[4], itinerary_data[5], itinerary_data[6])
         self.refresh_itineraries()
 
+    def get_itinerary_matrix(self):
+        # Fetch itineraries for the destination ID
+        itineraries = self.controller.get_destinasi_detail(self.destination_id)
+
+        # Group itineraries by dates
+        itineraries_by_date = {}
+        for itinerary in itineraries:
+            date_str = itinerary.tanggal.strftime('%A %d/%m')
+            if date_str not in itineraries_by_date:
+                itineraries_by_date[date_str] = {'locations': [], 'hours': []}
+            itineraries_by_date[date_str]['locations'].append(itinerary.lokasi)
+            itinerary_hours = f"{itinerary.waktu_mulai.strftime('%H:%M')} - {itinerary.waktu_selesai.strftime('%H:%M')}"
+            itineraries_by_date[date_str]['hours'].append(itinerary_hours)
+
+        # Construct the matrix of locations and hours grouped by dates
+        dates = list(itineraries_by_date.keys())
+        locations_matrix = [itineraries_by_date[date]['locations'] for date in dates]
+        hours_matrix = [itineraries_by_date[date]['hours'] for date in dates]
+        print("AKJSBDsb\n")
+        print(dates)
+        print("")
+        print(locations_matrix)
+        print("")
+        print(hours_matrix)
+        return dates, locations_matrix, hours_matrix
+
     def refresh_itineraries(self):
+        # Clear existing widgets
         for i in reversed(range(self.grid_layout.count())):
             self.grid_layout.itemAt(i).widget().setParent(None)
 
-        # Fetch the updated list of itineraries
-        itineraries = self.controller.get_destinasi_detail(self.destination_id)
+        # Get the matrix of locations and hours grouped by dates
+        dates, locations_matrix, hours_matrix = self.get_itinerary_matrix()
 
         # Rebuild the list of itineraries
-        headers = [itinerary.tanggal.strftime('%A %d/%m') for itinerary in itineraries]
-        list_of_places = [[itinerary.lokasi for itinerary in itineraries]]
-        list_of_hours = [[f"{itinerary.waktu_mulai.strftime('%H:%M')}-{itinerary.waktu_selesai.strftime('%H:%M')}" for itinerary in itineraries]]
-
-        for index, (header, places, hours) in enumerate(zip(headers, list_of_places, list_of_hours)):
-            schedule_widget = ScheduleWidget(header, places, hours)
+        for index, (header, locations, hours) in enumerate(zip(dates, locations_matrix, hours_matrix)):
+            # Create BoxOfItinerary widget for each date
+            box_of_itinerary = ScheduleWidget(header, locations, hours)
             row = index // 2
             col = index % 2
-            self.grid_layout.addWidget(schedule_widget, row, col, alignment=Qt.AlignLeft)  # Align each widget to the left
-            for place_index in range(len(places)):
-                schedule_widget.table_layout.itemAt(place_index).widget().clicked.connect(
-                    lambda place_index=place_index, widget_index=index: self.handleScheduleWidgetRowClick(widget_index, place_index)
-                )
+            self.grid_layout.addWidget(box_of_itinerary, row, col, alignment=Qt.AlignLeft)
 
+            # Connect signals and slots for each location
+            # for place_index, location in enumerate(locations):
+            #     box_of_itinerary.item_clicked.connect(
+            #         lambda widget_index=index, place_index=place_index: self.handleScheduleWidgetRowClick(widget_index, place_index)
+            #     )
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     main_window = QtWidgets.QMainWindow()
