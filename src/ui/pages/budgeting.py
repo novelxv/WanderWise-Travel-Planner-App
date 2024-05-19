@@ -169,11 +169,12 @@ class FormDialog(QDialog):
         self.accept()
 
 class BudgetingWindow(QWidget):
-    def __init__(self, destination, main_window):
+    def __init__(self, destination, main_window, before_page):
         super().__init__(main_window)
         self.main_window = main_window
         self.destination = destination
         self.stacked_widget = main_window.stacked_widget
+        self.before_page = before_page
         
         # Set up the main layout
         main_layout = QVBoxLayout()
@@ -181,6 +182,8 @@ class BudgetingWindow(QWidget):
 
         # Back Button
         back_button = BackButton()
+        # before page bertipe qwidget
+        back_button.clicked.connect(self.go_back)
 
         # Title
         title_label = QLabel("Your Budgeting")
@@ -251,6 +254,9 @@ class BudgetingWindow(QWidget):
         # Set window properties
         self.setWindowTitle("Your Budgeting")
         # self.setGeometry(100, 100, 1320, 1000)
+
+    def go_back(self):
+        self.stacked_widget.setCurrentWidget(self.before_page)
     
     def format_rupiah(self, nominal):
         nominal_str = str(nominal)[::-1]

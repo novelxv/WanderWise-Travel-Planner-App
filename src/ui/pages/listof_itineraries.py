@@ -5,11 +5,25 @@ from src.ui.components.boxofitinerary.boxofitinerary import *
 from src.ui.components.addbutton.addbutton import *
 from src.ui.pages.form_add_itinerary import *
 from src.ui.components.backbutton.backbutton import BackButton
+from src.controller.itinerary_controller import ItineraryController
+from src.controller.destinasi_controller import DestinasiController
+
 class Listof_Itineraries(QtWidgets.QMainWindow):
-    def __init__(self, trip, headers, list_of_places, list_of_hours, main_window=None):
+    def __init__(self, destination_id, main_window=None):
         super().__init__(main_window)
         self.main_window = main_window
         self.stacked_widget = main_window.stacked_widget
+
+        # Initialize ItineraryController to fetch data
+        controller = ItineraryController()
+        dest_controller = DestinasiController()
+        destinasi = dest_controller.get_destinasi_by_id(destination_id)
+        itineraries = controller.get_destinasi_detail(destination_id)
+
+        trip = "Trip to " + str(destinasi.nama)  # Adjust as necessary based on your logic
+        headers = [itinerary.tanggal.strftime('%A %d/%m') for itinerary in itineraries]
+        list_of_places = [[itinerary.lokasi for itinerary in itineraries]]
+        list_of_hours = [[f"{itinerary.waktu_mulai.strftime('%H:%M')}-{itinerary.waktu_selesai.strftime('%H:%M')}" for itinerary in itineraries]]
 
         main_window_width = main_window.width()
         main_window_height = main_window.height()
@@ -30,6 +44,7 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         # BACK BUTTON
         self.back_button = BackButton()
         self.header_layout.addWidget(self.back_button, alignment=Qt.AlignRight)
+        self.back_button.clicked.connect(lambda: self.main_window.stacked_widget.setCurrentIndex(0))
 
         # Add header ITINERARY and trip labels
         self.header_labels_layout = QtWidgets.QVBoxLayout()
@@ -120,19 +135,8 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     main_window = QtWidgets.QMainWindow()
     main_window.setFixedSize(1024, 768)
-    headers = ["Monday 10/12", "Tuesday 11/12"]
-    list_of_places = [
-        ["Amusement Park", "Tamfest", "Famous Museum", "Waterboom", "Upno", "Upno2"],
-        ["Park", "Mall", "Museum", "Aquarium", "Zoo", "Beach"]
-    ]
-    list_of_hours = [
-        ["07.00-11.30", "11.30-13.00", "13.00-15.00", "15.30-20.00", "20.00-21.00", "20.00-21.00"],
-        ["08.00-10.00", "10.00-12.00", "12.00-14.00", "14.00-16.00", "16.00-18.00", "18.00-20.00"]
-    ]
-    trip = "Trip to Wonderland"
-    widget = Listof_Itineraries(trip, headers, list_of_places, list_of_hours, main_window)
+    destination_id = 1  # Example destination_id
+    widget = Listof_Itineraries(destination_id, main_window)
     main_window.setCentralWidget(widget)
     main_window.show()
     sys.exit(app.exec_())
-
-

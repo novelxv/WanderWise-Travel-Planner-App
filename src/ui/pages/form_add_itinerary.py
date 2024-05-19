@@ -110,11 +110,11 @@ class FormAddItinerary(QWidget):
         self.setLayout(main_layout)
 
     def done_button_clicked(self):
-        if self.compare_dates() == 0:
+        if self.compare_times() == 0:
             err_popup = ErrorPopup("Invalid date format. Please enter time in HH.MM format.")
             err_popup.show()
             return
-        elif self.compare_dates() == 1:
+        elif self.compare_times() == 1:
             err_popup = ErrorPopup("Invalid Input. End time must be later than start time.")
             err_popup.show()
             return
