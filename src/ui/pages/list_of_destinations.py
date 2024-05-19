@@ -37,6 +37,7 @@ class ListOfDestinations(QWidget):
         # BACK BUTTON
         self.back_button = BackButton()
         self.header_layout.addWidget(self.back_button, alignment=Qt.AlignRight)
+        self.back_button.clicked.connect(lambda: self.main_window.stacked_widget.setCurrentIndex(0))
 
         # Add header ITINERARY label
         self.header_itinerary_label = QLabel("ALL DESTINATIONS")
@@ -144,6 +145,7 @@ class ListOfDestinations(QWidget):
             print(destination_data[i]) # debug
         self.destinations_controller.add_destinasi(destination_data[0], destination_data[1], destination_data[2], destination_data[3], destination_data[4], destination_data[5])
         self.refresh_destinations()
+        self.show_all_destinations()
     
     def open_destination_detail(self, destination_id):
         detail_page = DestinationDetail(destination_id, self.main_window)

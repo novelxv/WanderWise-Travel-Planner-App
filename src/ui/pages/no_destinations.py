@@ -17,6 +17,7 @@ class DestinationsPage(QWidget):
 
         # Back Button
         back_button = BackButton()
+        back_button.clicked.connect(lambda: self.main_window.stacked_widget.setCurrentIndex(0))
 
         # Title
         title_label = QLabel("ALL DESTINATIONS")
@@ -59,6 +60,7 @@ class DestinationsPage(QWidget):
             }
         """)
         add_button.setFixedSize(250, 60)
+        add_button.clicked.connect(lambda: self.main_window.stacked_widget.setCurrentIndex(3))
         button_layout.addWidget(add_button)
         button_layout.setAlignment(Qt.AlignCenter)
 

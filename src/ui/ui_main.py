@@ -11,6 +11,7 @@ from src.ui.pages.form_add_destination import FormAddDestination
 from src.ui.pages.form_edit_destination import FormEditDestination
 # from ui.pages.form_edit_itinerary import FormEditItinerary
 from src.ui.pages.destination_detail import DestinationDetail
+from src.ui.pages.no_destinations import DestinationsPage
 
 
 class UI(object):
@@ -82,6 +83,7 @@ class UI(object):
 
         home_widget = HomePage(parent)
         article_list_widget = ArticleList(articles, parent)
+        no_destinations = DestinationsPage(parent)
         destination_list_widget = ListOfDestinations(destinations, parent)
         # itinerary_list_widget = Listof_Itineraries(" Bandung Trip 10/10/24 - 15/10/24", headers, list_of_places, list_of_hours, parent)
         # itinerary_detail_widget = Itinerary_Details()
@@ -97,7 +99,8 @@ class UI(object):
 
         content_container.addWidget(home_widget) #PAGE 0
         content_container.addWidget(article_list_widget) #PAGE 1
-        content_container.addWidget(destination_list_widget) #PAGE 2
+        content_container.addWidget(no_destinations) #PAGE 2
+        content_container.addWidget(destination_list_widget) #PAGE 3
         # content_container.addWidget(itinerary_list_widget) #PAGE 3
         # content_container.addWidget(itinerary_detail_widget) #PAGE 4
         # content_container.addWidget(article_detail_widget) #PAGE 5

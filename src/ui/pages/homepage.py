@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 
 # Import kelas tombol yang baru Anda buat
 from src.ui.components.hellobutton.hellobutton import OvalButton
+from src.controller.destinasi_controller import DestinasiController
 
 class HomePage(QWidget):
     def __init__(self, parent=None):
@@ -45,7 +46,13 @@ class HomePage(QWidget):
         self.stacked_widget.setCurrentIndex(1)
 
     def on_see_destination_click(self):
-        self.stacked_widget.setCurrentIndex(2)
+        destinasi = DestinasiController()
+        n_dest = len(destinasi.get_all_destinasi())
+        print(n_dest)
+        if n_dest == 0:
+            self.stacked_widget.setCurrentIndex(2)
+        else:
+            self.stacked_widget.setCurrentIndex(3)
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
