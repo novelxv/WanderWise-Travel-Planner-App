@@ -1,12 +1,20 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 import sys
 
+class ClickableWidget(QtWidgets.QWidget):
+    clicked = QtCore.pyqtSignal(int)
+
+    def __init__(self, index, parent=None):
+        super().__init__(parent)
+        self.index = index
+
+    def mousePressEvent(self, event):
+        self.clicked.emit(self.index)
+
 class ScheduleWidget(QtWidgets.QWidget):
-    clicked = QtCore.pyqtSignal()
     def __init__(self, header, places, hours, parent=None):
         super().__init__(parent)
 
-        # Set the fixed width for the widget
         self.setFixedWidth(500)  # Change 300 to your desired width
 
         self.main_layout = QtWidgets.QVBoxLayout()
@@ -14,16 +22,8 @@ class ScheduleWidget(QtWidgets.QWidget):
         self.main_layout.setSpacing(0)
         self.setLayout(self.main_layout)
 
-        # Set the border for the entire ScheduleWidget
-        self.setStyleSheet("""
-            QWidget {
-                background-color: #FFF9ED;
-            }
-        """)
-        
         # Header Tanggal
         self.header_label = QtWidgets.QLabel(header)
-        self.header_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.header_label.setStyleSheet("""
             QLabel {
                 background-color: #C36F0C;
@@ -39,6 +39,7 @@ class ScheduleWidget(QtWidgets.QWidget):
                 padding-left: 10px;
             }
         """)
+        self.header_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.header_label.setFixedHeight(80)
         self.main_layout.addWidget(self.header_label)
 
@@ -59,7 +60,7 @@ class ScheduleWidget(QtWidgets.QWidget):
 
         # Populate the table
         for i, (place, hour) in enumerate(zip(places, hours)):
-            row_widget = QtWidgets.QWidget()
+            row_widget = ClickableWidget(i)
             row_layout = QtWidgets.QHBoxLayout()
             row_layout.setContentsMargins(0, 0, 0, 0)
             row_layout.setSpacing(0)
@@ -75,9 +76,9 @@ class ScheduleWidget(QtWidgets.QWidget):
             hour_label.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
 
             if i % 2 == 0:
-                row_widget.setStyleSheet("background-color: #FFE589; padding: 10px; margin: 0px;  border-radius: 0px")
+                row_widget.setStyleSheet("background-color: #FFE589; padding: 10px; margin: 0px; border-radius: 0px")
             else:
-                row_widget.setStyleSheet("background-color: #FFC800; padding: 10px; margin: 0px;  border-radius: 0px")
+                row_widget.setStyleSheet("background-color: #FFC800; padding: 10px; margin: 0px; border-radius: 0px")
             row_layout.addWidget(place_label)
             row_layout.addWidget(hour_label)
             if i == len(places) - 1:
@@ -85,16 +86,8 @@ class ScheduleWidget(QtWidgets.QWidget):
             place_label.setStyleSheet("border-right: 0px solid; font: bold 25px;")
             hour_label.setStyleSheet("border-left: 0px solid; font: bold 25px;")
             self.table_layout.addWidget(row_widget)
-    def mousePressEvent(self, event):
-        # Emit the custom signal when the widget is clicked
-        self.clicked.emit()
 
+            row_widget.clicked.connect(lambda index=i: self.handleRowClick(index))
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    header = "Monday 10/12"
-    places = ["Amusement Park", "Tamfest", "Famous Museum", "Waterboom", "Upno", "Upno2"]
-    hours = ["07.00-11.30", "11.30-13.00", "13.00-15.00", "15.30-20.00", "20.00-21.00", "20.00-21.00"]
-    widget = ScheduleWidget(header, places, hours)
-    widget.show()
-    sys.exit(app.exec_())
+    def handleRowClick(self, index):
+        print("Clicked row:", index)

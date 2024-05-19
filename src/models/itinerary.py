@@ -15,7 +15,10 @@ class Itinerary():
         self.itinerary_id = itinerary_id
         self.destinasi_id = destinasi_id
         self.lokasi = lokasi
-        self.tanggal = tanggal
+        if isinstance(tanggal, str):
+            self.tanggal = date.fromisoformat(tanggal)
+        else:
+            self.tanggal = tanggal
         self.waktu_mulai = waktu_mulai
         self.waktu_selesai = waktu_selesai
         if isinstance(waktu_mulai, str):

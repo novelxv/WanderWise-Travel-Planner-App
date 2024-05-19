@@ -1,10 +1,13 @@
 from PyQt5.QtWidgets import QWidget, QToolButton, QLabel, QVBoxLayout, QSizePolicy
 from PyQt5.QtGui import QIcon, QCursor, QPixmap
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import QSize, Qt, pyqtSignal
 
 class CustomButton(QWidget):
-    def __init__(self, icon_path, text, width, parent=None):
+    clicked_with_id = pyqtSignal(int)
+
+    def __init__(self, icon_path, text, width, destination_id, parent=None):
         super().__init__(parent)
+        self.destination_id = destination_id  # Store the destination ID
 
         # Create main layout
         layout = QVBoxLayout(self)
@@ -27,7 +30,7 @@ class CustomButton(QWidget):
                 background: none;
             }
         """)
-        self.button.clicked.connect(self.handle_article_click)
+        self.button.clicked.connect(self.emit_id)
         layout.addWidget(self.button)
 
         # Set text label
@@ -52,5 +55,5 @@ class CustomButton(QWidget):
         # Set fixed size for the custom button widget
         self.setFixedSize(QSize(width, int(0.5 * width) + self.label.sizeHint().height()))
 
-    def handle_article_click(self, event):
-        print("clicked")
+    def emit_id(self):
+        self.clicked_with_id.emit(self.destination_id)

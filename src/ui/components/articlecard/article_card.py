@@ -38,7 +38,7 @@ class ArticleCard(QWidget):
             #article_title {
                 background-color: #FFC800;
                 padding-top: 10px;
-                font: 25px bold;
+                font: bold 20px;
                 border: 5px solid black;
                 border-top : 0;
                 border-bottom-left-radius: 10px;

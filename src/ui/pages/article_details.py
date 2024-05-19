@@ -5,22 +5,27 @@ from PyQt5.QtGui import QPixmap
 
 from src.ui.components.backbutton.backbutton import BackButton
 
-class ArticleDetailWindow(QtWidgets.QMainWindow):
-    def __init__(self):
+class ArticleDetailWindow(QtWidgets.QWidget):
+    def __init__(self, articles, main_window=None):
         super().__init__()
+        self.main_window = main_window
+        self.articles = articles
+        self.stacked_widget = main_window.stacked_widget if main_window else None
+
+        # Main window size
+        if main_window:
+            main_window_width = main_window.width()
+            main_window_height = main_window.height()
+            self.setFixedWidth(main_window_width)
+            self.setFixedHeight(main_window_height)
+
         self.setWindowTitle("Article Detail")
-        self.setGeometry(20, 50, 1200, 900)  # Adjust window size to fit content
 
-        # Central widget
-        self.central_widget = QtWidgets.QWidget()
-        self.setCentralWidget(self.central_widget)
-        self.layout = QtWidgets.QVBoxLayout(self.central_widget)
+        # Layout setup
+        self.layout = QtWidgets.QVBoxLayout(self)
 
-        # Back button setup
         self.back_button = BackButton()
-        self.back_button.setFixedSize(60, 60)  # Increased size of the back button
         self.layout.addWidget(self.back_button, alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-        self.back_button.move(50, 50)  # Move to the right
 
         # Scroll area setup
         scroll_area = QtWidgets.QScrollArea()
@@ -62,7 +67,7 @@ class ArticleDetailWindow(QtWidgets.QMainWindow):
         # Image label
         self.image_label = QtWidgets.QLabel()
         self.image_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.image_label.setPixmap(QtGui.QPixmap("img/images/ex_article.png").scaled(1164, 324, QtCore.Qt.IgnoreAspectRatio))
+        self.image_label.setPixmap(QtGui.QPixmap("img/images/article1.png").scaled(1164, 324, QtCore.Qt.IgnoreAspectRatio))
         self.scroll_layout.addWidget(self.image_label)
 
         # Description label
@@ -81,8 +86,11 @@ class ArticleDetailWindow(QtWidgets.QMainWindow):
         # Stretch to push content to the top
         self.scroll_layout.addStretch()
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    window = ArticleDetailWindow()
-    window.show()
+    main_window = QtWidgets.QMainWindow()
+    article_detail_window = ArticleDetailWindow([], main_window)
+    main_window.setCentralWidget(article_detail_window)
+    main_window.show()
     sys.exit(app.exec_())

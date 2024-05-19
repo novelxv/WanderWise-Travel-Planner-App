@@ -8,12 +8,24 @@ class ArtikelController:
         self.cursor = cursor
     
     def get_all_artikel(self):
-        self.cursor.execute('''SELECT * FROM t_artikel''')
-        artikel_list = self.cursor.fetchall()
+        result = self.cursor.execute('''SELECT * FROM t_artikel''').fetchall()
+        artikel_list = []
+        for row in result:
+            artikel_list.append(Article(row[0], row[1], row[2], row[3], row[4]))
         return artikel_list
     
     def get_artikel_by_id(self, id):
-        self.cursor.execute('SELECT * FROM t_artikel WHERE artikel_id=?', (id,))
-        artikel = self.cursor.fetchone()
-        return artikel
+        result = self.cursor.execute('SELECT * FROM t_artikel WHERE artikel_id=?', (id,)).fetchone()
+        if result is not None:
+            return Article(result[0], result[1], result[2], result[3], result[4])
+        else:
+            return None
+    
+    def add_artikel(self, judul, konten, penulis, tanggal_rilis):
+        self.cursor.execute(
+            '''INSERT INTO t_artikel (judul, konten, penulis, tanggal_rilis)
+              VALUES (?,?,?,?)''', (judul, konten, penulis, tanggal_rilis,)
+        )
+        self.conn.commit()
+        return self.cursor.lastrowid
     

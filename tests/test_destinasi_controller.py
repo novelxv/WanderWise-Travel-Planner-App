@@ -20,7 +20,7 @@ class TestDestinasiController(TestCase):
             self.controller.add_destinasi(entry["nama"], entry["kategori"], entry["tanggal_mulai"], entry["tanggal_selesai"], entry["budget"], entry["tabungan"])
             list_destinasi.append(Destinasi(i+1, entry["nama"], entry["kategori"], entry["tanggal_mulai"], entry["tanggal_selesai"], entry["budget"], entry["tabungan"]))
         result = self.controller.get_all_destinasi()
-        self.assertEqual(result[0].destinasi_id, 1)
+        self.assertEqual(len(result), 2)
         assert result[0].nama == "Paris"
         assert result[0].tanggal_mulai == date(2023, 6, 15)
         assert result[0].tanggal_selesai == date(2023, 6, 20)
@@ -43,12 +43,15 @@ class TestDestinasiController(TestCase):
         self.assertEqual(result.tabungan, list_destinasi[0].tabungan)
 
     def test_get_destinasi_by_kategory(self):
-        for i,entry in enumerate(self.tests):
-            self.controller.add_destinasi(entry["nama"], entry["kategori"], entry["tanggal_mulai"], entry["tanggal_selesai"], entry["budget"], entry["tabungan"])
+        self.controller.add_destinasi("Brazil", "Idea", "2023-04-05", "2023-05-10", 10000, 500)
         
-        result = self.controller.get_destinasi_by_kategory("Plan")
-        self.assertEqual(result.nama, self.tests[0]["nama"])
-        self.assertEqual(result.kategori, self.tests[0]["kategori"])
+        result = self.controller.get_destinasi_by_kategory("Idea")
+        self.assertEqual(result[0].nama, "Brazil")
+        self.assertEqual(result[0].kategori, "Idea")
+        self.assertEqual(result[0].tanggal_mulai, date(2023,4,5))
+        self.assertEqual(result[0].tanggal_selesai, date(2023,5,10))
+        self.assertEqual(result[0].budget, 10000)
+        self.assertEqual(result[0].tabungan, 500)
 
     def test_add_destinasi(self):
         query = self.controller.add_destinasi("Japan", "Plan", "2024-05-11", "2024-06-11", 1000000, 30000)

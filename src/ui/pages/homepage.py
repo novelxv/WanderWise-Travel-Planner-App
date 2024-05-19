@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.QtCore import Qt
 
 # Import kelas tombol yang baru Anda buat
-from ui.components.hellobutton.hellobutton import OvalButton
+from src.ui.components.hellobutton.hellobutton import OvalButton
 
 class HomePage(QWidget):
     def __init__(self, parent=None):
@@ -15,6 +15,7 @@ class HomePage(QWidget):
         self.setGeometry(300, 100, 1500, 600)  # Adjust window position and size
         self.stacked_widget = parent.stacked_widget
         self.last_page_idx = parent.last_page_idx
+        
         # Set background image
         self.pixmap = QPixmap('img/bg/Homepage2.png')
         self.updateBackground()

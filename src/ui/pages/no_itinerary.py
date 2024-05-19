@@ -2,15 +2,21 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
+from ui.components.backbutton.backbutton import BackButton
 
 class ItinerariesPage(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, main_window):
+        super().__init__(main_window)
+        self.main_window = main_window
+        self.stacked_widget = main_window.stacked_widget
 
         # Set up the main layout
         main_layout = QVBoxLayout()
         # main_layout.setAlignment(Qt.AlignCenter)
         main_layout.setSpacing(20)
+
+        # Back Button
+        back_button = BackButton()
 
         # Title
         title_label = QLabel("ALL ITINERARIES")
@@ -57,8 +63,9 @@ class ItinerariesPage(QWidget):
         button_layout.setAlignment(Qt.AlignCenter)
 
         # Add widgets to the main layout
+        main_layout.addWidget(back_button)
         main_layout.addLayout(title_container)
-        main_layout.addStretch()
+        main_layout.addSpacing(200)
         main_layout.addWidget(no_destination_label)
         main_layout.addWidget(subtext_label)
         main_layout.addLayout(button_layout)
@@ -69,10 +76,10 @@ class ItinerariesPage(QWidget):
 
         # Set window properties
         self.setWindowTitle("All Itinerary")
-        self.setGeometry(100, 100, 800, 600)
+        # self.setGeometry(100, 100, 800, 600)
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = ItinerariesPage()
-    window.show()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     window = ItinerariesPage()
+#     window.show()
+#     sys.exit(app.exec_())
