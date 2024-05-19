@@ -29,4 +29,7 @@ def clear_db():
 def commit():
     conn.commit()
 
+def __del__():
+    conn.close()
+
 conn, cursor = connect_db()
