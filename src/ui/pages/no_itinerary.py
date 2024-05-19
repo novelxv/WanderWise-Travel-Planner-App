@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
-from ui.components.backbutton.backbutton import BackButton
+from src.ui.components.backbutton.backbutton import BackButton
 
 class ItinerariesPage(QWidget):
     def __init__(self, main_window):
@@ -19,19 +19,33 @@ class ItinerariesPage(QWidget):
         back_button = BackButton()
 
         # Title
-        title_label = QLabel("ALL ITINERARIES")
-        title_label.setFont(QFont("Arial", 18))
-        title_label.setAlignment(Qt.AlignLeft)
-        title_label.setStyleSheet("margin-top: 20px; margin-left: 20px;")
+        self.title_label = QLabel("ALL ITINERARIES")
+        self.title_label.setStyleSheet("""
+            QLabel {
+                font: bold 35px;
+                text-align: left;
+                color: #000080;
+                background: none;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+        """)
 
         # Container for title
         title_container = QVBoxLayout()
-        title_container.addWidget(title_label)
+        title_container.addWidget(self.title_label)
         title_container.setAlignment(Qt.AlignLeft | Qt.AlignTop)
 
         # No Destination Label
         no_destination_label = QLabel("No Itinerary")
-        no_destination_label.setFont(QFont("Arial", 24, QFont.Bold))
+        no_destination_label.setStyleSheet("""
+            QLabel {
+                font: bold 35px;
+                color: #000080;
+                background: none;
+
+            }
+        """)
         no_destination_label.setAlignment(Qt.AlignCenter)
 
         # Subtext Label
@@ -42,7 +56,7 @@ class ItinerariesPage(QWidget):
         # Add Destination Button
         button_layout = QHBoxLayout()
         add_button = QPushButton("Add An Itinerary")
-        add_button.setFont(QFont("Arial", 14, QFont.Bold))
+        add_button.setFont(QFont("Arial", 10, QFont.Bold))
         add_button.setStyleSheet("""
             QPushButton {
                 background-color: #FFA500;

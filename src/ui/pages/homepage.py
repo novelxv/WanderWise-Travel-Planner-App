@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QWidget
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QWidget, QApplication, QSpacerItem, QPushButton, QSizePolicy
 from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.QtCore import Qt
 
-# Import kelas tombol yang baru Anda buat
+# Import the OvalButton class
 from src.ui.components.hellobutton.hellobutton import OvalButton
 from src.controller.destinasi_controller import DestinasiController
 
@@ -18,16 +18,20 @@ class HomePage(QWidget):
         self.last_page_idx = parent.last_page_idx
         
         # Set background image
-        self.pixmap = QPixmap('img/bg/Homepage2.png')
-        self.updateBackground()
+        self.pixmap = QPixmap('img/icons/HomePage.png')
 
         layout = QVBoxLayout()
+        app = QApplication.instance()
+        # Create QLabel for background image
+        self.background_label = QLabel(self)
+        self.background_label.setPixmap(self.pixmap)
+        self.background_label.setGeometry(int((self.width() - self.pixmap.width()) / 2), int((self.height() - self.pixmap.height()) / 2), self.pixmap.width(), self.pixmap.height())
+        self.background_label.setScaledContents(True)
 
-        # Create spacer to push content to the center
-        spacer_top = QSpacerItem(20, 200, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        layout.addItem(spacer_top)
+        # Add spacer to move the buttons up
+        layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
-        # Add button
+        # Add buttons
         custom_button1 = OvalButton("See All Destination Here!", "#263B4E", 11)
         layout.addWidget(custom_button1, alignment=Qt.AlignCenter)
         custom_button1.clicked.connect(self.on_see_destination_click)
@@ -36,9 +40,8 @@ class HomePage(QWidget):
         layout.addWidget(custom_button2, alignment=Qt.AlignCenter)
         custom_button2.clicked.connect(self.on_see_articles_click)
 
-        # Create spacer to push content to the center
-        spacer_bottom = QSpacerItem(20, 200, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        layout.addItem(spacer_bottom)
+        # Add bottom spacer to create a gap
+        layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         self.setLayout(layout)
 
@@ -56,9 +59,11 @@ class HomePage(QWidget):
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
-        self.updateBackground()
+        self.background_label.setGeometry(int((self.width() - self.pixmap.width()) / 2), int((self.height() - self.pixmap.height()) / 2), self.pixmap.width(), self.pixmap.height())
 
-    def updateBackground(self):
-        palette = QPalette()
-        palette.setBrush(QPalette.Background, QBrush(self.pixmap.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
-        self.setPalette(palette)
+if __name__ == '__main__':
+    import sys
+    app = QApplication(sys.argv)
+    window = HomePage()
+    window.show()
+    sys.exit(app.exec_())
