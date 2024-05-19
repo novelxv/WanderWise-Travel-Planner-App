@@ -40,25 +40,25 @@ class UI(object):
 
         # set content container
         content_container = QStackedWidget()
-        content_container.setFixedWidth(int(0.9 * width))
+        # content_container.setFixedWidth(int(0.9 * width))
         parent.stacked_widget = content_container
 
         # add stacked widget to window
         parent.last_page_idx = 0
 
+        # ------------ UNCOMMENT THIS TO ADD PAGES
         home_widget = HomePage(parent)
         article_list_widget = self.wrap_with_footer(ArticleList(articles, parent))
         no_destinations = self.wrap_with_footer(DestinationsPage(parent))
         destination_list_widget = self.wrap_with_footer(ListOfDestinations(destinations, parent))
-        form_add_destinasi_widget = self.wrap_with_footer(FormAddDestination(parent))
-        form_edit_destinasi_widget = self.wrap_with_footer(FormEditDestination(parent))
+        # destination_detail_widget = self.wrap_with_footer(DestinationDetail(parent))
 
         content_container.addWidget(home_widget)  # PAGE 0
         content_container.addWidget(article_list_widget)  # PAGE 1
         content_container.addWidget(no_destinations)  # PAGE 2
         content_container.addWidget(destination_list_widget)  # PAGE 3
-        content_container.addWidget(form_add_destinasi_widget)  # PAGE 6
-        content_container.addWidget(form_edit_destinasi_widget)  # PAGE 8
+        # content_container.addWidget(destination_detail_widget)  # PAGE 4
+        # ------------- UNCOMMENT THIS TO ADD PAGES
 
         parent.setCentralWidget(self.central_widget)
         layout = QHBoxLayout(self.central_widget)
@@ -77,16 +77,15 @@ class UI(object):
 
     def create_footer(self):
         footer_layout = QHBoxLayout()
-
         destinations_label = QLabel("Destinations")
         destinations_label.setAlignment(Qt.AlignCenter)
-        destinations_label.setStyleSheet("color: white; font: bold 15px;")
+        destinations_label.setStyleSheet("color: white; padding-left: 700px ;padding-bottom: 30px; font: bold 30px; background: transparent")
         destinations_label.setCursor(QCursor(Qt.PointingHandCursor))
         destinations_label.mousePressEvent = self.destinations_clicked
 
         articles_label = QLabel("Articles")
         articles_label.setAlignment(Qt.AlignCenter)
-        articles_label.setStyleSheet("color: white; font: bold 15px;")
+        articles_label.setStyleSheet("color: white; padding-bottom: 30px; font: bold 30px; background: transparent")
         articles_label.setCursor(QCursor(Qt.PointingHandCursor))
         articles_label.mousePressEvent = self.articles_clicked
 
@@ -95,8 +94,7 @@ class UI(object):
 
         footer_widget = QWidget()
         footer_widget.setLayout(footer_layout)
-        footer_widget.setStyleSheet("background-color: #004c59;")
-        footer_widget.setFixedHeight(40)
+        footer_widget.setFixedHeight(100)
 
         return footer_widget
 

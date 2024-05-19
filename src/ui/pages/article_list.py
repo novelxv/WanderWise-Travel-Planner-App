@@ -35,6 +35,7 @@ class ArticleList(QWidget):
 
         # Create the back button
         self.back_button = BackButton()
+        self.back_button.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(0))
 
         # Create the top layout and add the back button and header label
         top_layout = QtWidgets.QHBoxLayout()
