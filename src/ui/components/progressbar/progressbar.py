@@ -12,7 +12,10 @@ class ProgressBarWindow(QWidget):
         # Create the progress bar
         self.progress_bar = QProgressBar(self)
         self.progress_bar.setRange(0, 100)
-        self.progress_bar.setValue(int(now/goal*100))  # Set initial value to 70%
+        if now > goal:
+            self.progress_bar.setValue(100)
+        else:
+            self.progress_bar.setValue(int(now/goal*100))  # Set initial value to 70%
         self.progress_bar.setTextVisible(False)  # Hide the percentage text
         self.progress_bar.setFixedSize(550, 40)
 
