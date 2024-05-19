@@ -64,12 +64,12 @@ class FormEditItinerary(QWidget):
         self.form_box_location.move(100, 180)
 
         # add the FormBox For Start Time
-        self.form_box_stime = FormBox("07.00", self, 400)
+        self.form_box_stime = FormBox("07:00:00", self, 400)
         self.form_box_stime.setParent(content_widget)
         self.form_box_stime.move(100, 290)
 
         # add the FormBox For End Time
-        self.form_box_etime = FormBox("11.30", self, 400)
+        self.form_box_etime = FormBox("11:30:00", self, 400)
         self.form_box_etime.setParent(content_widget)
         self.form_box_etime.move(545, 290)
 
@@ -124,7 +124,7 @@ class FormEditItinerary(QWidget):
 
     def done_button_clicked(self):
         if self.compare_times() == 0:
-            err_popup = ErrorPopup("Invalid time format. Please enter time in HH.MM format.")
+            err_popup = ErrorPopup("Invalid time format. Please enter time in HH:MM:SS format.")
             err_popup.exec_()
             return
         elif self.compare_times() == 1:
@@ -192,7 +192,7 @@ class FormEditItinerary(QWidget):
 
     def parse_time(self, time_str):
         # Use regular expression to validate the time format HH.MM
-        match = re.match(r'^([01]?[0-9]|2[0-3])\.([0-5]?[0-9])$', time_str)
+        match = re.match(r'^([01]?[0-9]|2[0-3]):([0-5]?[0-9]):([0-5]?[0-9])$', time_str)
         if match:
             hours, minutes = int(match.group(1)), int(match.group(2))
             return QtCore.QTime(hours, minutes)
