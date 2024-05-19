@@ -34,7 +34,9 @@ pytest
 
 
 ## Database Structure
+
 1. Articles
+
 |     Field     |    Type   | NULL |   Key   |       Extra      |
 | ------------- |  -------- | ---- | ------- | ---------------- |
 | artikel_id    |  INTEGER  |  NO  |   PRI   |  auto_increment  |
@@ -42,7 +44,9 @@ pytest
 | konten        |    TEXT   |  NO  |         |                  |
 | penulis       |    TEXT   |  NO  |         |                  |
 | tanggal_rilis |    DATE   |  NO  |         |                  |
+
 2. Destinations
+
 |       Field     |    Type   | NULL |   Key   |       Extra      |
 | --------------- |  -------- | ---- | ------- | ---------------- |
 | destinasi_id    |  INTEGER  |  NO  |   PRI   | auto_increment   |
@@ -52,7 +56,9 @@ pytest
 | tanggal_selesai |    DATE   |  NO  |         |                  |
 | budget          |  INTEGER  |  NO  |         |                  |
 | tabungan        |  INTEGER  |  NO  |         |                  |
+
 3. Itinerary
+
 |       Field     |    Type   | NULL |   Key   |                 Extra              |
 | --------------- |  -------- | ---- | ------- | ---------------------------------  |
 | itinerary_id    |  INTEGER  |  NO  |   PRI   |            auto_increment          |
