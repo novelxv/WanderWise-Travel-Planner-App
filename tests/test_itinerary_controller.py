@@ -12,13 +12,6 @@ class TestItineraryController(TestCase):
         self.controller = ItineraryController()
         destinasi_controller.add_destinasi("Montenegro", "Booked", "2023-06-15", "2023-06-20",5000000, 1000000)
         destinasi_controller.add_destinasi("Indonesia", "Idea", "2023-06-15", "2023-06-20",5000000, 1000000)
-
-        # des1 = destinasi_controller.get_destinasi_by_id(1)
-        # des2 = destinasi_controller.get_destinasi_by_id(2)
-        # self.controller.add_itinerary(des1.destinasi_id, "Upno", des1.tanggal_mulai, "18:00:00", "18:10:00", 10000, "motor", "mahal")
-        # self.controller.add_itinerary(des1.destinasi_id, "Museum", des1.tanggal_selesai, "18:00:00", "18:10:00", 10000, "motor", "mahal")
-        # self.controller.add_itinerary(des2.destinasi_id, "Upno", des2.tanggal_mulai, "18:00:00", "18:10:00", 10000, "motor", "mahal")
-        # self.controller.add_itinerary(des2.destinasi_id, "Waterboom", des2.tanggal_selesai, "18:00:00", "18:10:00", 10000, "motor", "mahal")
         self.tests = [{"destinasi_id": 1, "lokasi": "Upno", "tanggal": "2023-06-15", "waktu_mulai": "18:00:00", "waktu_selesai": "18:10:00", "biaya": 10000, "transportasi": "motor", "catatan": "mahal"},
                       {"destinasi_id": 1, "lokasi": "Museum", "tanggal": "2023-06-20", "waktu_mulai": "18:00:00", "waktu_selesai": "18:10:00", "biaya": 10000, "transportasi": "motor", "catatan": "mahal"},
                       {"destinasi_id": 2, "lokasi": "Upno", "tanggal": "2023-06-15", "waktu_mulai": "18:00:00", "waktu_selesai": "18:10:00", "biaya": 10000, "transportasi": "motor", "catatan": "mahal"},
