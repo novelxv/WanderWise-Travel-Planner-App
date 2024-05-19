@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QProgressBar
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
+from ui.components.backbutton.backbutton import BackButton
 
 class SavingsWidget(QWidget):
     def __init__(self, word, nominal):
@@ -78,28 +79,35 @@ class ProgressBarWidget(QWidget):
 
 
 class BudgetingWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-
+    def __init__(self, destination, main_window):
+        super().__init__(main_window)
+        self.main_window = main_window
+        self.destination = destination
+        self.stacked_widget = main_window.stacked_widget
+        
         # Set up the main layout
         main_layout = QVBoxLayout()
         main_layout.setAlignment(Qt.AlignTop)
+
+        # Back Button
+        back_button = BackButton()
 
         # Title
         title_label = QLabel("Your Budgeting")
         title_label.setFont(QFont("Arial", 24, QFont.Bold))
         title_label.setAlignment(Qt.AlignCenter)
+        title_label.setStyleSheet("margin-top: 50px")
 
         # Create a horizontal line
         line = QLabel()
         line.setFixedHeight(2)
-        line.setStyleSheet("background-color: #000000;")
+        line.setStyleSheet("background-color: #000000")
 
         # Savings and Target layouts
         savings_target_layout = QHBoxLayout()
 
-        savings_widget = SavingsWidget("Your Savings", 100000000)
-        target_widget = SavingsWidget("Your Target", 120000000)
+        savings_widget = SavingsWidget("Your Savings", destination.tabungan)
+        target_widget = SavingsWidget("Your Target", destination.budget)
 
         savings_target_layout.addWidget(savings_widget)
         savings_target_layout.addWidget(target_widget)
@@ -119,16 +127,20 @@ class BudgetingWindow(QWidget):
         edit_button.addWidget(edit_button_goals)
 
         # Goals Label
-        goals_label = QLabel("Goals to reach your destination:\n20.000.000")
+        goals = self.format_rupiah(destination.budget - destination.tabungan)
+        goals_label = QLabel("Goals to reach your destination:\n" + goals)
         goals_label.setFont(QFont("Arial", 24, QFont.Bold))
         goals_label.setAlignment(Qt.AlignCenter)
+        goals_label.setStyleSheet("padding-top: 150px")
 
         # Progress Bar
-        progress_bar_widget = ProgressBarWidget(100000000, 120000000)
+        progress_bar_widget = ProgressBarWidget(destination.tabungan, destination.budget)
 
         # Add widgets to the main layout
+        main_layout.addWidget(back_button)
         main_layout.addWidget(title_label)
         main_layout.addWidget(line)
+        main_layout.addSpacing(50)
         main_layout.addLayout(savings_target_layout)
         main_layout.addLayout(edit_button)
         main_layout.addWidget(goals_label)
@@ -143,11 +155,17 @@ class BudgetingWindow(QWidget):
 
         # Set window properties
         self.setWindowTitle("Your Budgeting")
-        self.setGeometry(100, 100, 800, 600)
+        # self.setGeometry(100, 100, 1320, 1000)
+    
+    def format_rupiah(self, nominal):
+        nominal_str = str(nominal)[::-1]
+        ribuan = [nominal_str[i:i + 3] for i in range(0, len(nominal_str), 3)]
+        hasil = '.'.join(ribuan)[::-1]
+        return "Rp " + hasil
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = BudgetingWindow()
-    window.show()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     window = BudgetingWindow()
+#     window.show()
+#     sys.exit(app.exec_())
