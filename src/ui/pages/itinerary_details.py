@@ -1,15 +1,28 @@
 import sys
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox
+from PyQt5.QtWidgets import QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayout, QGridLayout, QGroupBox
 from src.ui.components.ovalbutton.ovalbutton import *
 from src.ui.components.backbutton.backbutton import BackButton
+from src.controller.itinerary_controller import ItineraryController
 
 class Itinerary_Details(QtWidgets.QMainWindow):
-    def __init__(self, location, hours, location_desc, ticket, transport, notes, main_window):
+    def __init__(self, itinerary_id, main_window, before_page):
         super().__init__(main_window)
         self.main_window = main_window
-        self.stacked_widget = main_window.stacked_widget
+        self.before_page = before_page
+        # self.stacked_widget = main_window.stacked_widget
+
+        # Initialize ItineraryController to fetch data
+        controller = ItineraryController()
+        itinerary = controller.get_itinerary_by_id(itinerary_id)
+
+        location = itinerary.lokasi
+        hours = f"{itinerary.waktu_mulai.strftime('%H:%M')} - {itinerary.waktu_selesai.strftime('%H:%M')}"
+        location_desc = "This is a placeholder description for the location."  # Replace with actual description if available
+        ticket = itinerary.biaya
+        transport = itinerary.transportasi
+        notes = itinerary.catatan
 
         main_window_width = main_window.width()
         main_window_height = main_window.height() - 150
@@ -52,6 +65,8 @@ class Itinerary_Details(QtWidgets.QMainWindow):
 
         # Adding buttons to the header layout
         self.back_button = BackButton()
+        self.back_button.clicked.connect(self.go_back)
+
         self.edit_button = OvalButtonIcon("Edit", "img/icons/Pencil.png", "#FFA200", 40)
         self.delete_button = OvalButtonIcon("Delete", "img/icons/trash-can.png", "#FF5D00", 40)
         self.header_layout.addWidget(self.back_button)
@@ -117,9 +132,6 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.ticket_layout.addWidget(self.ticket_label)
         self.ticket_info_label.setLayout(self.ticket_layout)
         self.grid_layout.addWidget(self.ticket_info_label, 1, 0, 1, 2)  # Moved ticket information to row 2
-        # self.grid_layout.addWidget(self.ticket_info_label, 1, 0, 1, 1)
-
-
 
         # Adding a group box for transportation information
         self.transport_group_box = QGroupBox("Transportation: ")
@@ -139,7 +151,6 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.edit_button.clicked.connect(self.handle_edit_button_click)
         self.delete_button.clicked.connect(self.handle_delete_button_click)
 
-
     def handle_edit_button_click(self):
         print("Edit button clicked!")
         # Add your logic for edit button click here
@@ -151,6 +162,7 @@ class Itinerary_Details(QtWidgets.QMainWindow):
     def handle_back_button_click(self):
         print("Back button clicked!")
         # Add your logic for back button click here
+
     def resizeEvent(self, event):
         # Set the maximum width of the description label to 70% of the screen width
         screen_width = self.central_widget.width()
@@ -158,14 +170,15 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.description_label.setMaximumWidth(max_width)
         super(Itinerary_Details, self).resizeEvent(event)
 
+    def go_back(self):
+        self.main_window.stacked_widget.setCurrentWidget(self.before_page)
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    tickets = 900
-    transport = "Taxi"
-    notes = "Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes Ini notes"
-    desc = "One attraction that we definitely can't miss is the stunning natural wonder, XXX Falls. Tucked away in the heart of the forest, these majestic falls cascade down in a breathtaking display of nature's power and beauty. We can take a leisurely hike through the lush trails surrounding the falls, listening to the soothing sounds of rushing water and birdsong. And when we reach the viewing platforms, we'll be treated to panoramic vistas of the falls, with rainbows dancing in the mist. After experiencing the awe-inspiring beauty of XXX Falls, we can immerse ourselves in the rich cultural heritage of the region by visiting the historic XXX Village. It's sure to be an unforgettable journey filled with adventure, natural beauty, and cultural discovery."
-    hours = "07.00 - 10.00"
-    location = "AMUSEMENT PARK"
-    window = Itinerary_Details(location, hours, desc, tickets, transport, None)
-    window.show()
+    itinerary_id = 1  # Example itinerary_id
+    main_window = QtWidgets.QMainWindow()
+    main_window.setFixedSize(1024, 768)
+    widget = Itinerary_Details(itinerary_id, main_window)
+    main_window.setCentralWidget(widget)
+    main_window.show()
     sys.exit(app.exec_())

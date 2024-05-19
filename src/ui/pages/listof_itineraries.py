@@ -9,6 +9,7 @@ from src.controller.itinerary_controller import ItineraryController
 from src.controller.destinasi_controller import DestinasiController
 from PyQt5.QtWidgets import QFrame
 from PyQt5.QtWidgets import QLabel
+from src.ui.pages.itinerary_details import *
 
 class Listof_Itineraries(QtWidgets.QMainWindow):
     def __init__(self, destination_id, before_page, main_window=None):
@@ -98,16 +99,7 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         scroll_area.setWidget(scroll_content)
         scroll_area.setFixedWidth(main_window_width - 100)  # Adjust width of the scroll area
 
-        # Create ScheduleWidgets for each day's itinerary
-        for index, (header, places, hours) in enumerate(zip(headers, list_of_places, list_of_hours)):
-            schedule_widget = ScheduleWidget(header, places, hours)
-            row = index // 2
-            col = index % 2
-            self.grid_layout.addWidget(schedule_widget, row, col, alignment=Qt.AlignLeft)  # Align each widget to the left
-            for place_index in range(len(places)):
-                schedule_widget.table_layout.itemAt(place_index).widget().clicked.connect(
-                    lambda place_index=place_index, widget_index=index: self.handleScheduleWidgetRowClick(widget_index, place_index)
-                )
+        self.refresh_itineraries()
 
         # Create and add footer
         self.footer_label = QLabel("")
@@ -133,8 +125,11 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         self.add_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
         self.add_destination_form.show()
 
-    def handleScheduleWidgetRowClick(self, widget_index, row_index):
-        print(f"Clicked widget {widget_index}, row {row_index}")
+    def handleScheduleWidgetRowClick(self, itinerary_id):
+        print(f"Clicked itinerary {itinerary_id}")
+        itinerary_details_page = Itinerary_Details(itinerary_id+1, self.main_window, self)
+        self.stacked_widget.addWidget(itinerary_details_page)
+        self.stacked_widget.setCurrentWidget(itinerary_details_page)
 
     def go_back(self):
         self.stacked_widget.setCurrentWidget(self.before_page)
@@ -169,28 +164,32 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         print("")
         print(hours_matrix)
         return dates, locations_matrix, hours_matrix
-
+    
     def refresh_itineraries(self):
-        # Clear existing widgets
+        # Clear the current grid layout
         for i in reversed(range(self.grid_layout.count())):
             self.grid_layout.itemAt(i).widget().setParent(None)
 
-        # Get the matrix of locations and hours grouped by dates
-        dates, locations_matrix, hours_matrix = self.get_itinerary_matrix()
+        # Fetch the updated itineraries
+        headers, list_of_places, list_of_hours = self.get_itinerary_matrix()
 
-        # Rebuild the list of itineraries
-        for index, (header, locations, hours) in enumerate(zip(dates, locations_matrix, hours_matrix)):
-            # Create BoxOfItinerary widget for each date
-            box_of_itinerary = ScheduleWidget(header, locations, hours)
+        # Fetch the updated itineraries
+        itineraries = self.controller.get_destinasi_detail(self.destination_id)
+
+        # Repopulate the grid layout with the updated itineraries
+        for index, (header, places, hours) in enumerate(zip(headers, list_of_places, list_of_hours)):
+            itinerary_ids = [itinerary.itinerary_id for itinerary in itineraries]
+            schedule_widget = ScheduleWidget(header, places, hours, itinerary_ids)
             row = index // 2
             col = index % 2
-            self.grid_layout.addWidget(box_of_itinerary, row, col, alignment=Qt.AlignLeft)
+            self.grid_layout.addWidget(schedule_widget, row, col, alignment=Qt.AlignLeft)  # Align each widget to the left
+            for place_index in range(len(places)):
+                itinerary_id = schedule_widget.itinerary_ids[place_index]  # Get the itinerary id
+                schedule_widget.table_layout.itemAt(place_index).widget().clicked.connect(
+                    lambda itinerary_id=itinerary_id: self.handleScheduleWidgetRowClick(itinerary_id)
+                )
+    
 
-            # Connect signals and slots for each location
-            # for place_index, location in enumerate(locations):
-            #     box_of_itinerary.item_clicked.connect(
-            #         lambda widget_index=index, place_index=place_index: self.handleScheduleWidgetRowClick(widget_index, place_index)
-            #     )
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     main_window = QtWidgets.QMainWindow()

@@ -12,8 +12,9 @@ class ClickableWidget(QtWidgets.QWidget):
         self.clicked.emit(self.index)
 
 class ScheduleWidget(QtWidgets.QWidget):
-    def __init__(self, header, places, hours, parent=None):
+    def __init__(self, header, places, hours, itinerary_ids, parent=None):
         super().__init__(parent)
+        self.itinerary_ids = itinerary_ids
 
         self.setFixedWidth(500)  # Change 300 to your desired width
 
