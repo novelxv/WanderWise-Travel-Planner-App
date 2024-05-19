@@ -9,11 +9,18 @@ Wanderwise is a travel planner desktop software application. Wanderwise also pro
 ```
 git clone https://gitlab.informatika.org/novelxv/if2250-2024-k02-g11-wanderwise.git
 ```
-- install requirements with
+1. install requirements with
 ```
 pip install requirements.txt
 ```
-- 
+2. install all packages
+```
+pip install -e .
+```
+3. Run the program from root directory using
+```
+python src/main.py
+```
 
 ## Testing (optional)
 To test if the database is correctly initialized, run unit tests with the following command from the `tests` repository.
