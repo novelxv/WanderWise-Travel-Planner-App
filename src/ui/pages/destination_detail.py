@@ -46,10 +46,10 @@ class DestinationDetail(QWidget):
         self.grid_layout.addWidget(self.image_label, 0, 0, 2, 1)
 
         # Tag label
-        self.tag_label = QLabel("An exciting adventure starts on\n" + str(self.destinasi.tanggal_mulai) + "-" + str(self.destinasi.tanggal_selesai))
-        self.tag_label.setStyleSheet("font-size: 36px; font-weight: bold; background: transparent; margin-top: 100px")
+        self.tag_label = QLabel("An exciting adventure starts on\n" + str(self.destinasi.tanggal_mulai) + " until " + str(self.destinasi.tanggal_selesai))
+        self.tag_label.setStyleSheet("font-size: 40px; font-weight: bold; background: transparent; margin-top: 100px")
         self.tag_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignRight)
-        self.grid_layout.addWidget(self.tag_label, 0, 1, 1, 1)
+        self.grid_layout.addWidget(self.tag_label, 0, 1, 2, 1)
 
         # Top layout for buttons
         self.top_layout = QHBoxLayout()
@@ -131,7 +131,7 @@ class DestinationDetail(QWidget):
 
         # Budget goals remaining label
         self.budget_goals_label = QLabel("Goals remaining:")
-        self.budget_goals_label.setStyleSheet("font-size: 20px; font-weight: bold; background: transparent;")
+        self.budget_goals_label.setStyleSheet("font-size: 30px; font-weight: bold; background: transparent;")
         self.budget_layout.addWidget(self.budget_goals_label, alignment=Qt.AlignRight)
 
         # Budget value label
@@ -139,14 +139,14 @@ class DestinationDetail(QWidget):
             self.budget_value_label = QLabel(str(0))
         else:
             self.budget_value_label = QLabel(str(self.destinasi.budget - self.destinasi.tabungan))
-        self.budget_value_label.setStyleSheet("font-size: 50px; font-weight: bold; background: transparent;")
+        self.budget_value_label.setStyleSheet("font-size: 60px; font-weight: bold; background: transparent;")
         self.budget_layout.addWidget(self.budget_value_label, alignment=Qt.AlignRight)
 
         # Progress bar
         self.progress_bar_window = ProgressBarWindow(self.destinasi.tabungan, self.destinasi.budget)
         self.budget_layout.addWidget(self.progress_bar_window, alignment=Qt.AlignRight)
 
-        self.grid_layout.addWidget(self.budget_container, 1, 1, 2, 1, alignment=Qt.AlignCenter)
+        self.grid_layout.addWidget(self.budget_container, 2, 1, 2, 1, alignment=Qt.AlignCenter)
 
         # Button layout for "Budgeting" and "Itineraries"
         self.bottom_button_layout = QHBoxLayout()
