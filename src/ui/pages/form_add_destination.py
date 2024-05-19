@@ -117,15 +117,15 @@ class FormAddDestination(QWidget):
         self.setLayout(main_layout)
     
     def update_start_date(self, date):
-        self.form_box_sdate.setText(date.toString("dd/MM/yy"))
+        self.form_box_sdate.setText(date.toString("yyyy-MM-dd"))
 
     def update_end_date(self, date):
-        self.form_box_edate.setText(date.toString("dd/MM/yy"))
+        self.form_box_edate.setText(date.toString("yyyy-MM-dd"))
     
     def done_button_clicked(self):
         destination_data = [
             self.form_box_destination.getText(),
-            self.drop_down.currentText(),
+            self.drop_down.selected_option,
             self.form_box_sdate.getText(),
             self.form_box_edate.getText(),
             int(self.form_box_budget.getText().replace(' ', '')),
