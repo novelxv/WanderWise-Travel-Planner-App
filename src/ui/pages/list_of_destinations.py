@@ -53,11 +53,13 @@ class ListOfDestinations(QWidget):
         self.header_layout.addStretch()  # Add stretch to push the header label to the left
 
         # Create a layout for the buttons
+        all_button = OvalButtonIcon("All", None, "#C0C0C0", 40)
         idea_button = OvalButtonIcon("Idea", None, "#C5E5C0", 40)
         plan_button = OvalButtonIcon("Plan", None, "#FFCF52", 40)
         booked_button = OvalButtonIcon("Booked", None, "#FF5D00", 40)
         done_button = OvalButtonIcon("Done", None, "#00A6FF", 40)
 
+        all_button.clicked.connect(self.show_all_destinations)
         idea_button.clicked.connect(self.show_idea_destinations)
         plan_button.clicked.connect(self.show_plan_destinations)
         booked_button.clicked.connect(self.show_booked_destinations)
@@ -66,6 +68,7 @@ class ListOfDestinations(QWidget):
         buttons_layout = QHBoxLayout()
         buttons_layout.setSpacing(15)  # Set spacing between buttons
 
+        buttons_layout.addWidget(all_button)
         buttons_layout.addWidget(idea_button)
         buttons_layout.addWidget(plan_button)
         buttons_layout.addWidget(booked_button)
@@ -170,6 +173,9 @@ class ListOfDestinations(QWidget):
             col = index % 3
             self.grid_layout.addWidget(card, row, col)
             card.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+
+    def show_all_destinations(self):
+        self.refresh_destinations()
 
     def show_idea_destinations(self):
         idea_destinations = [d for d in self.destinations if d.kategori == 'Idea']
