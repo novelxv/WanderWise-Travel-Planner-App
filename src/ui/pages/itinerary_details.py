@@ -2,16 +2,17 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox
-from src.ui.components.ovalbutton.ovalbutton import *
+from ui.components.ovalbutton.ovalbutton import *
 
 class Itinerary_Details(QtWidgets.QMainWindow):
-    def __init__(self, location, hours, location_desc, ticket, transport, notes, main_window=None):
+    def __init__(self, location, hours, location_desc, ticket, transport, notes, main_window):
         super().__init__(main_window)
         self.main_window = main_window
         self.stacked_widget = main_window.stacked_widget
 
         main_window_width = main_window.width()
-        main_window_height = main_window.height()
+        main_window_height = main_window.height() - 150
+        self.setStyleSheet("padding-top: 100px")
         self.setFixedWidth(main_window_width)
         self.setFixedHeight(main_window_height)
 
@@ -49,8 +50,8 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.header_layout.addStretch()
 
         # Adding buttons to the header layout
-        self.edit_button = OvalButtonIcon("Edit", "img/icons/Pencil.png", "#FFA200", 40)
-        self.delete_button = OvalButtonIcon("Delete", "img/icons/trash-can.png", "#FF5D00", 40)
+        self.edit_button = OvalButtonIcon("Edit", "../img/icons/Pencil.png", "#FFA200", 40)
+        self.delete_button = OvalButtonIcon("Delete", "../img/icons/trash-can.png", "#FF5D00", 40)
         self.header_layout.addWidget(self.edit_button)
         self.header_layout.addWidget(self.delete_button)
 
@@ -74,7 +75,7 @@ class Itinerary_Details(QtWidgets.QMainWindow):
 
         # Adding the image at the top
         self.image_label = QLabel()
-        imagedest = "img/icons/AmusementPark.png"
+        imagedest = "../img/icons/AmusementPark.png"
         self.image_label.setPixmap(QtGui.QPixmap(imagedest).scaled(1000, 1500, QtCore.Qt.KeepAspectRatio))
         self.grid_layout.addWidget(self.image_label, 0, 0, 1, 1)
         self.image_label.setAlignment(Qt.AlignLeft)
@@ -90,7 +91,7 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         # Adding Notes below the description
         if notes is None:
             self.notes_image_label = QLabel()
-            imagedest = "img/icons/Notes.png"
+            imagedest = "../img/icons/Notes.png"
             self.notes_image_label.setPixmap(QtGui.QPixmap(imagedest).scaled(800, 300, QtCore.Qt.KeepAspectRatio))
             self.notes_image_label.setStyleSheet("padding-left: 30px")
             self.grid_layout.addWidget(self.notes_image_label, 1, 1, 1, 1)
