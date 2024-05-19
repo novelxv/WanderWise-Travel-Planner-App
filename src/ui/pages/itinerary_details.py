@@ -2,7 +2,8 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox
-from ui.components.ovalbutton.ovalbutton import *
+from src.ui.components.ovalbutton.ovalbutton import *
+from src.ui.components.backbutton.backbutton import BackButton
 
 class Itinerary_Details(QtWidgets.QMainWindow):
     def __init__(self, location, hours, location_desc, ticket, transport, notes, main_window):
@@ -50,8 +51,10 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.header_layout.addStretch()
 
         # Adding buttons to the header layout
-        self.edit_button = OvalButtonIcon("Edit", "../img/icons/Pencil.png", "#FFA200", 40)
-        self.delete_button = OvalButtonIcon("Delete", "../img/icons/trash-can.png", "#FF5D00", 40)
+        self.back_button = BackButton()
+        self.edit_button = OvalButtonIcon("Edit", "img/icons/Pencil.png", "#FFA200", 40)
+        self.delete_button = OvalButtonIcon("Delete", "img/icons/trash-can.png", "#FF5D00", 40)
+        self.header_layout.addWidget(self.back_button)
         self.header_layout.addWidget(self.edit_button)
         self.header_layout.addWidget(self.delete_button)
 
@@ -70,13 +73,12 @@ class Itinerary_Details(QtWidgets.QMainWindow):
 
         scroll_content = QtWidgets.QWidget()
         self.grid_layout = QGridLayout(scroll_content)
-        self.grid_layout.setVerticalSpacing(40)
         scroll_area.setWidget(scroll_content)
 
         # Adding the image at the top
         self.image_label = QLabel()
-        imagedest = "../img/icons/AmusementPark.png"
-        self.image_label.setPixmap(QtGui.QPixmap(imagedest).scaled(1000, 1500, QtCore.Qt.KeepAspectRatio))
+        imagedest = "img/icons/AmusementPark.png"
+        self.image_label.setPixmap(QtGui.QPixmap(imagedest).scaled(900, 300, QtCore.Qt.KeepAspectRatio))
         self.grid_layout.addWidget(self.image_label, 0, 0, 1, 1)
         self.image_label.setAlignment(Qt.AlignLeft)
 
@@ -84,42 +86,59 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.description_label = QLabel(location_desc)
         self.description_label.setAlignment(Qt.AlignCenter)  # Align the description label to the center
         self.description_label.setWordWrap(True)
-        self.description_label.setStyleSheet("font: bold 25px; color: #000000; padding-left: 30px;")
-        self.description_label.setMaximumWidth(700)  # Set a maximum width for the description label
+        self.description_label.setStyleSheet("font: bold 20px; color: #000000; padding-left: 30px;")
+        self.description_label.setMaximumWidth(500)  # Set a maximum width for the description label
         self.grid_layout.addWidget(self.description_label, 0, 1, 1, 1)
-
+        
         # Adding Notes below the description
         if notes is None:
             self.notes_image_label = QLabel()
-            imagedest = "../img/icons/Notes.png"
-            self.notes_image_label.setPixmap(QtGui.QPixmap(imagedest).scaled(800, 300, QtCore.Qt.KeepAspectRatio))
-            self.notes_image_label.setStyleSheet("padding-left: 30px")
+            imagedest = "img/icons/Notes.png"
+            self.notes_image_label.setPixmap(QtGui.QPixmap(imagedest).scaled(650, 300, QtCore.Qt.KeepAspectRatio))
+            self.notes_image_label.setStyleSheet("padding-left: 50px")
             self.grid_layout.addWidget(self.notes_image_label, 1, 1, 1, 1)
             self.notes_image_label.setAlignment(Qt.AlignLeft)
         else:
-            self.notes_label = QLabel(notes)
+            notes_text = f"<b>Notes:</b><br> {notes}"  # Add "Notes:" before the actual notes content
+            self.notes_label = QLabel(notes_text)
             self.notes_label.setWordWrap(True)
-            self.notes_label.setStyleSheet("font-size: 26px; padding: 20px; background-color: #FFFFFF;")
+            self.notes_label.setStyleSheet("font-size: 25px; padding: 18px; background-color: #D9D9D9; border-radius: 10px;")
             self.grid_layout.addWidget(self.notes_label, 1, 1, 1, 1)
+        
         # Adding Ticket Information
-        self.ticket_info_label = QLabel(f"Tickets: {ticket}")
-        self.ticket_info_label.setStyleSheet("font-size: 18px; padding: 20px;")
-        self.grid_layout.addWidget(self.ticket_info_label, 2, 0, 1, 2)
+        self.ticket_info_label = QGroupBox("Tickets: ")
+        self.ticket_info_label.setStyleSheet("font: bold 30px; padding-bottom: 20px; background: transparent")
+        self.ticket_info_label.setAlignment(Qt.AlignLeft)
+        self.ticket_layout = QVBoxLayout()
+        self.ticket_label = QLabel(f"${ticket}")
+        self.ticket_label.setStyleSheet("padding-bottom: 5px; font: regular 20px; background: #D9D9D9; border-radius: 10px; padding-right: 10px;")
+        self.ticket_label.setFixedHeight(60)
+        self.ticket_label.setFixedWidth(400)
+        self.ticket_layout.addWidget(self.ticket_label)
+        self.ticket_info_label.setLayout(self.ticket_layout)
+        self.grid_layout.addWidget(self.ticket_info_label, 1, 0, 1, 2)  # Moved ticket information to row 2
+        # self.grid_layout.addWidget(self.ticket_info_label, 1, 0, 1, 1)
+
+
 
         # Adding a group box for transportation information
-        self.transport_group_box = QGroupBox("Transportation")
-        self.transport_group_box.setStyleSheet("font-size: 18px; padding: 20px;")
+        self.transport_group_box = QGroupBox("Transportation: ")
+        self.transport_group_box.setStyleSheet("font: bold 30px; padding-top: 50px; padding-bottom: 30px; background: transparent")
         self.transport_group_box.setAlignment(Qt.AlignLeft)
         self.transport_layout = QVBoxLayout()
-        self.transport_label = QLabel(f"Transport: {transport}")
+        self.transport_label = QGroupBox(transport)
+        self.transport_label.setStyleSheet("padding-bottom: 5px; padding-top: 100px; font: regular 20px; background: #D9D9D9; border-radius: 10px; padding-right: 10px;")
+        self.transport_label.setFixedHeight(60)
+        self.transport_label.setFixedWidth(400)
         self.transport_layout.addWidget(self.transport_label)
         self.transport_group_box.setLayout(self.transport_layout)
-        self.grid_layout.addWidget(self.transport_group_box, 3, 0, 1, 1)
-
+        self.grid_layout.addWidget(self.transport_group_box, 2, 0, 1, 2)
 
         # Connect button signals to handlers
+        self.back_button.clicked.connect(self.handle_back_button_click)
         self.edit_button.clicked.connect(self.handle_edit_button_click)
         self.delete_button.clicked.connect(self.handle_delete_button_click)
+
 
     def handle_edit_button_click(self):
         print("Edit button clicked!")
@@ -129,6 +148,9 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         print("Delete button clicked!")
         # Add your logic for delete button click here
 
+    def handle_back_button_click(self):
+        print("Back button clicked!")
+        # Add your logic for back button click here
     def resizeEvent(self, event):
         # Set the maximum width of the description label to 70% of the screen width
         screen_width = self.central_widget.width()
