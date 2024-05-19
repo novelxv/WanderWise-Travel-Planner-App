@@ -16,8 +16,11 @@ class ArticleDetailWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.central_widget)
         self.layout = QtWidgets.QVBoxLayout(self.central_widget)
 
+        # Back button setup
         self.back_button = BackButton()
+        self.back_button.setFixedSize(60, 60)  # Increased size of the back button
         self.layout.addWidget(self.back_button, alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+        self.back_button.move(50, 50)  # Move to the right
 
         # Scroll area setup
         scroll_area = QtWidgets.QScrollArea()
@@ -77,8 +80,6 @@ class ArticleDetailWindow(QtWidgets.QMainWindow):
 
         # Stretch to push content to the top
         self.scroll_layout.addStretch()
-
-       
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
