@@ -99,11 +99,3 @@ class FormAddItinerary(QWidget):
     def done_button_clicked(self):
         print("Done button clicked")
 
-def main():
-    app = QApplication(sys.argv)
-    form_add_itinerary = FormAddItinerary()
-    form_add_itinerary.show()
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()
