@@ -126,25 +126,25 @@ class FormEditDestination(QWidget):
     def done_button_clicked(self):
         if self.compare_dates() == 0:
             err_popup = ErrorPopup("Invalid date format. Please enter date in yyyy-mm-dd format.")
-            err_popup.show()
+            err_popup.exec_()
             return
         elif self.compare_dates() == 1:
             err_popup = ErrorPopup("Invalid Input. End date must be later than start date.")
-            err_popup.show()
+            err_popup.exec_()
             return
 
         try:
             budget = int(self.form_box_budget.getText().replace(' ', ''))
         except ValueError:
             err_popup = ErrorPopup("Invalid Input. Must be an integer.")
-            err_popup.show()
+            err_popup.exec_()
             return
         
         try:
             savings = int(self.form_box_savings.getText().replace(' ', ''))
         except ValueError:
             err_popup = ErrorPopup("Invalid Input. Must be an integer.")
-            err_popup.show()
+            err_popup.exec_()
             return
 
         if self.drop_down.selected_option == None:
@@ -164,7 +164,7 @@ class FormEditDestination(QWidget):
         for i in range(len(destination_data)-2):
             if destination_data[i] == "":
                 err_popup = ErrorPopup("Invalid Input. All field must be filled in.")
-                err_popup.show()
+                err_popup.exec_()
                 return
 
         self.done_signal.emit(destination_data)

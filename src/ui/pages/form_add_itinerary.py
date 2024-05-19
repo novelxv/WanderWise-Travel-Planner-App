@@ -8,6 +8,7 @@ from src.ui.components.ovalbutton.ovalbutton import *
 from src.ui.components.dropdown.dropdown import *
 from src.ui.components.Form.form_box import FormBox
 from src.ui.components.errors.error import ErrorPopup
+from src.ui.components.calendar.calendar_picker import *
 
 class FormAddItinerary(QWidget):
     done_signal = pyqtSignal(list)  # Ubah sinyal untuk mengirimkan data sebagai list
@@ -72,13 +73,22 @@ class FormAddItinerary(QWidget):
         self.form_box_etime.setParent(content_widget)
         self.form_box_etime.move(545, 290)
 
-       # Add the FormBox instance For Cost/Ticket
-        self.form_box_cost = FormBox("XX.XXX.XXX", self, 950)
+        # Add the FormBox instance For Cost/Ticket
+        self.form_box_cost = FormBox("XX XXX XXX", self, 400)
         self.form_box_cost.setParent(content_widget)
         self.form_box_cost.move(100, 400)
 
+        # add the FormBox For Date
+        self.form_box_date = FormBox("2001-01-01", self, 400)
+        self.form_box_date.setParent(content_widget)
+        self.form_box_date.move(545, 400)
+        calendar_picker = CalendarPicker()
+        calendar_picker.dateSelected.connect(self.update_date)
+        calendar_picker.setParent(content_widget)
+        calendar_picker.move(805, 405)
+
         # Add the Dropdown instance For Transport
-        self.drop_down = DropDown(option_type="transport", button_text = "Category", parent=self)
+        self.drop_down = DropDown(option_type="transport", button_text = "Transport", parent=self)
         self.drop_down.setParent(content_widget)
         self.drop_down.move(90, 510)
 
@@ -109,21 +119,24 @@ class FormAddItinerary(QWidget):
         # Set the layout for the main widget
         self.setLayout(main_layout)
 
+    def update_date(self, date):
+        self.form_box_date.setText(date.toString("yyyy-MM-dd"))
+
     def done_button_clicked(self):
         if self.compare_times() == 0:
-            err_popup = ErrorPopup("Invalid date format. Please enter time in HH.MM format.")
-            err_popup.show()
+            err_popup = ErrorPopup("Invalid time format. Please enter time in HH.MM format.")
+            err_popup.exec_()
             return
         elif self.compare_times() == 1:
             err_popup = ErrorPopup("Invalid Input. End time must be later than start time.")
-            err_popup.show()
+            err_popup.exec_()
             return
 
         try:
-            cost = int(self.form_box_cost.getText().replace('.', ''))
+            cost = int(self.form_box_cost.getText().replace(' ', ''))
         except ValueError:
             err_popup = ErrorPopup("Invalid Input. Must be an integer.")
-            err_popup.show()
+            err_popup.exec_()
             return
 
         if self.drop_down.selected_option == None:
@@ -131,9 +144,15 @@ class FormAddItinerary(QWidget):
             err_popup.exec_()
             return
 
+        match = re.match(r'^(\d{4})-(\d{2})-(\d{2})$', self.form_box_date.getText())
+        if not match:
+            err_popup = ErrorPopup("Invalid date format. Please enter date in yyyy-mm-dd format.")
+            err_popup.exec_()
+            return
 
         itinerary_data = [
             self.form_box_location.getText(),
+            self.form_box_date.getText(),
             self.form_box_stime.getText(),
             self.form_box_etime.getText(),
             cost,
@@ -142,7 +161,7 @@ class FormAddItinerary(QWidget):
         ]
 
         for i in range(len(itinerary_data)):
-            if i != 3:
+            if i != 4:
                 if itinerary_data[i] == "":
                     err_popup = ErrorPopup("Invalid Input. All field must be filled in.")
                     err_popup.exec_()

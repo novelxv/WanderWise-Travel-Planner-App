@@ -61,6 +61,7 @@ class FormAddDestination(QWidget):
 
         # add the FormBox and CalendarPicker widget For Start Date
         self.form_box_sdate = FormBox("2001-01-01", self, 400)
+        self.form_box_sdate.setParent(content_widget)
         self.form_box_sdate.move(100, 180)
         calendar_picker_start = CalendarPicker()
         calendar_picker_start.dateSelected.connect(self.update_start_date)
@@ -69,6 +70,7 @@ class FormAddDestination(QWidget):
 
         # add the FormBox and CalendarPicker widget For End Date
         self.form_box_edate = FormBox("2001-01-02", self, 400)
+        self.form_box_edate.setParent(content_widget)
         self.form_box_edate.move(545, 180)
         calendar_picker_end = CalendarPicker()
         calendar_picker_end.dateSelected.connect(self.update_end_date)
