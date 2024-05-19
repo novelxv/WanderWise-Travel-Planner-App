@@ -95,8 +95,14 @@ class FormAddDestination(QWidget):
         oval_button = OvalButton("Done", "#69C99E", 35, self)
         oval_button.setParent(content_widget)
         oval_button.setFixedSize(149, 70)
-        oval_button.move(450, 700)
-        oval_button.clicked.connect(self.done_button_clicked)
+        oval_button.move(350, 700)
+        oval_button.clicked.connect(self.close_form)
+
+        oval_button = OvalButton("Close", "#69C99E", 35, self)
+        oval_button.setParent(content_widget)
+        oval_button.setFixedSize(149, 70)
+        oval_button.move(500, 700)
+        oval_button.clicked.connect(self.close_form)
 
         # Adding the scroll area to the main layout
         main_layout = QVBoxLayout(container)
@@ -114,6 +120,9 @@ class FormAddDestination(QWidget):
     
     def done_button_clicked(self):
         print("Done button clicked")
+
+    def close_form(self):
+        self.close()
 
 def main():
     app = QApplication(sys.argv)
