@@ -1,9 +1,10 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget, QScrollArea
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget, QScrollArea, QFrame
 from src.ui.components.addbutton.addbutton import FloatingAddButton
 from src.ui.components.ovalbutton.ovalbutton import OvalButtonIcon
 from src.ui.components.destinationscard.destinationscard import *
 from src.ui.pages.form_add_destination import FormAddDestination
+from src.ui.components.backbutton.backbutton import BackButton
 import sys
 from PyQt5.QtCore import Qt
 
@@ -22,7 +23,19 @@ class ListOfDestinations(QWidget):
         self.setFixedWidth(main_window_width)
         self.setFixedHeight(main_window_height)
 
-        # Header
+        # Create a main layout for the central widget
+        self.main_layout = QVBoxLayout(self)
+        self.main_layout.setContentsMargins(10, 40, 80, 0)  # Adjust margins to create space on the sides
+
+        # Header layout to hold back button and header labels
+        self.header_layout = QHBoxLayout()
+        self.main_layout.addLayout(self.header_layout)
+
+        # BACK BUTTON
+        self.back_button = BackButton()
+        self.header_layout.addWidget(self.back_button, alignment=Qt.AlignRight)
+
+        # Add header ITINERARY label
         self.header_itinerary_label = QLabel("ALL DESTINATIONS")
         self.header_itinerary_label.setStyleSheet("""
             QLabel {
@@ -32,6 +45,9 @@ class ListOfDestinations(QWidget):
                 background: none;
             }
         """)
+        self.header_layout.addWidget(self.header_itinerary_label)
+
+        self.header_layout.addStretch()  # Add stretch to push the header label to the left
 
         # Create a layout for the buttons
         idea_button = OvalButtonIcon("Idea", None, "#C5E5C0", 40)
@@ -52,22 +68,22 @@ class ListOfDestinations(QWidget):
         buttons_container.setLayout(buttons_layout)
         buttons_container.setContentsMargins(0, 0, 150, 0)  # Add right margin to prevent cutting off
 
-        # Add spacer to push the buttons to the right
-        top_layout = QHBoxLayout()
-        top_layout.addWidget(self.header_itinerary_label)
-        top_layout.addStretch()  # Push the buttons to the right
-        top_layout.addWidget(buttons_container)
+        # Add the buttons container to the header layout
+        self.header_layout.addWidget(buttons_container)
 
-        # Main layout
-        self.layout = QVBoxLayout(self)
-        self.layout.addLayout(top_layout)
+        # Add a blue line divider
+        self.divider_line = QFrame()
+        self.divider_line.setFrameShape(QFrame.HLine)
+        self.divider_line.setFrameShadow(QFrame.Sunken)
+        self.divider_line.setStyleSheet("color: #005A6D; background-color: #005A6D; height: 2px; border-radius: 5px;")
+        self.main_layout.addWidget(self.divider_line)
 
         # Scroll area setup
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        
+
         scroll_content = QWidget()
         scroll_area.setWidget(scroll_content)
 
@@ -88,13 +104,13 @@ class ListOfDestinations(QWidget):
             self.grid_layout.addWidget(card, row, col)
             card.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
-        self.layout.addWidget(scroll_area)
+        self.main_layout.addWidget(scroll_area)
 
         # Create and add footer
         self.footer_label = QLabel("")
         self.footer_label.setAlignment(Qt.AlignCenter)
-        self.footer_label.setFixedHeight(115)  # Adjust the height of the footer as needed
-        self.layout.addWidget(self.footer_label)
+        self.footer_label.setFixedHeight(125)  # Adjust the height of the footer as needed
+        self.main_layout.addWidget(self.footer_label)
 
         # Add the floating add button
         self.add_button = FloatingAddButton(self, position=(157, 170))
@@ -111,6 +127,7 @@ class ListOfDestinations(QWidget):
 
     def on_done_signal(self):
         print("Done adding destination")
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
