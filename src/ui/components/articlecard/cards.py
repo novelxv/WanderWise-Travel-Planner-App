@@ -27,7 +27,7 @@ class Cards(QWidget):
         # Setup cards
         for i in range(self.card_count):
             image_path = f"{base_url}images/article{i+1}.png"
-            card = ArticleCard(image_path, content[i].judul, int(0.75 * self.width() / 2))
+            card = ArticleCard(image_path, content[i].judul, int(0.75 * self.width() / 2), int(0.75 * self.width() / 3.3))
             self.card_container.addWidget(card, i // 2, i % 2, 1, 1)
 
         # Add a spacer item at the bottom to push the cards up
