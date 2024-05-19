@@ -23,11 +23,12 @@ class ItineraryController:
             return None
     
     def get_destinasi_detail(self, id):
-        result = self.cursor.execute('SELECT * FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=?', (id,)).fetchone()
-        if result is not None:
-            return Itinerary(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8])
-        else:
-            return None
+        result = self.cursor.execute('SELECT * FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=?', (id,)).fetchall()
+        itinerary_list = []
+        for row in result:
+            itinerary_list.append(Itinerary(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]))
+        return itinerary_list 
+
     
     def get_destinasi_detail_by_tanggal(self, id, tanggal):
         result = self.cursor.execute('SELECT * FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=? AND tanggal=?', (id,tanggal,)).fetchall()
