@@ -7,6 +7,7 @@ class DropDown(QtWidgets.QWidget):
         super().__init__(parent)
         self.option_type = option_type
         self.button_text = button_text
+        self.selected_option = None
         self.initUI()
 
     def initUI(self):
