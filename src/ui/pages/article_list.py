@@ -3,6 +3,7 @@ from src.ui.components.articlecard.cards import Cards
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap
 from PyQt5 import QtWidgets, QtGui, QtCore
+from src.ui.components.backbutton.backbutton import BackButton
 
 
 class ArticleList(QWidget):
@@ -44,6 +45,10 @@ class ArticleList(QWidget):
         layout = QVBoxLayout(self)
         layout.addLayout(top_layout)
         layout.addWidget(cards)
+
+        self.back_button = BackButton()
+        self.back_button.clicked.connect(lambda: self.parent.stacked_widget.setCurrentIndex(0))
+        layout.addWidget(self.back_button, alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
 
         # Adjust layout margins and spacings
         layout.setSpacing(0)

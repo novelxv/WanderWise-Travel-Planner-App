@@ -1,22 +1,24 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QStackedWidget, QHBoxLayout, QMainWindow, QSizePolicy
 from PyQt5.QtGui import QPixmap, QPalette, QBrush
-from ui.pages.homepage import HomePage
-from ui.pages.article_list import ArticleList
-from ui.pages.list_of_destinations import ListOfDestinations
-from ui.pages.listof_itineraries import Listof_Itineraries
+from src.ui.pages.homepage import HomePage
+from src.ui.pages.article_list import ArticleList
+from src.ui.pages.list_of_destinations import ListOfDestinations
+from src.ui.pages.listof_itineraries import Listof_Itineraries
 # from ui.pages.article_details import *
 # from ui.pages.itinerary_details import Itinerary_Details
-from ui.pages.form_add_destination import FormAddDestination
+from src.ui.pages.form_add_destination import FormAddDestination
 # from ui.pages.form_add_itinerary import FormAddItinerary
-from ui.pages.form_edit_destination import FormEditDestination
+from src.ui.pages.form_edit_destination import FormEditDestination
 # from ui.pages.form_edit_itinerary import FormEditItinerary
+from src.ui.pages.destination_detail import DestinationDetail
+
 
 class UI(object):
     def setup(self, parent:QMainWindow, destinations, articles):
         parent.setObjectName("Window")
 
         # Set background image
-        pixmap = QPixmap('../img/bg/window_bg.png')
+        pixmap = QPixmap('img/bg/window_bg.png')
         palette = QPalette()
         palette.setBrush(QPalette.Background, QBrush(pixmap))
         parent.setPalette(palette)
@@ -53,29 +55,35 @@ class UI(object):
         # content_container.addWidget(no_itinerary)
 
         # TESTING THEA
-        # headers = ["Monday 10/12", "Tuesday 11/12", "Wednesday 12/12", "Thursday 13/12", "Thursday 13/12"]
-        # list_of_places = [
-        #     ["Amusement Park", "Tamfest", "Famous Museum", "Waterboom", "Upno"], #monday
-        #     ["Zoo", "Botanical Garden", "Historical Museum", "Aquarium", "Maxx"], #tuesday
-        #     ["Mountain Climb", "City Tour", "Art Gallery", "Theater", "Bar"],
-        #     ["Mountain Climb", "City Tour", "Art Gallery", "Theater", "Bar"],
-        #     ["Beach", "Water Sports", "Seafood Restaurant", "Night Market", "Cat Cafe"]
-        # ]
-        # list_of_hours = [
-        #     ["07.00-11.30", "11.30-13.00", "13.00-15.00", "15.30-20.00", "20.00-21.00"],
-        #     ["08.00-12.00", "12.30-14.00", "14.30-16.00", "16.30-19.00", "19.30-21.00"],
-        #     ["06.00-10.00", "10.30-12.00", "12.30-14.00", "14.30-17.00", "17.30-19.00"],
-        #     ["06.00-10.00", "10.30-12.00", "12.30-14.00", "14.30-17.00", "17.30-19.00"],
-        #     ["09.00-12.00", "12.30-15.00", "15.30-18.00", "18.30-21.00", "21.30-23.00"]
-        # ]
+        headers = ["Monday 10/12", "Tuesday 11/12", "Wednesday 12/12", "Thursday 13/12", "Thursday 13/12"]
+        list_of_places = [
+            ["Amusement Park", "Tamfest", "Famous Museum", "Waterboom", "Upno"], #monday
+            ["Zoo", "Botanical Garden", "Historical Museum", "Aquarium", "Maxx"], #tuesday
+            ["Mountain Climb", "City Tour", "Art Gallery", "Theater", "Bar"],
+            ["Mountain Climb", "City Tour", "Art Gallery", "Theater", "Bar"],
+            ["Beach", "Water Sports", "Seafood Restaurant", "Night Market", "Cat Cafe"]
+        ]
+        list_of_hours = [
+            ["07.00-11.30", "11.30-13.00", "13.00-15.00", "15.30-20.00", "20.00-21.00"],
+            ["08.00-12.00", "12.30-14.00", "14.30-16.00", "16.30-19.00", "19.30-21.00"],
+            ["06.00-10.00", "10.30-12.00", "12.30-14.00", "14.30-17.00", "17.30-19.00"],
+            ["06.00-10.00", "10.30-12.00", "12.30-14.00", "14.30-17.00", "17.30-19.00"],
+            ["09.00-12.00", "12.30-15.00", "15.30-18.00", "18.30-21.00", "21.30-23.00"]
+        ]
+        # destinations = ["Bandung", "Semarang", "Makassar", "Padang", "Paris", "Jakarta"]
         # trip = "Bandung Trip 10/12/24 - 15/12/24"
         # list_of_itineraries = Listof_Itineraries(trip, headers, list_of_places, list_of_hours)
         # content_container.addWidget(list_of_itineraries)
 
+        # TEST PAGE
+        # destination_detail = DestinationDetail(1, parent)
+        # content_container.addWidget(destination_detail)
+
+
         home_widget = HomePage(parent)
         article_list_widget = ArticleList(articles, parent)
         destination_list_widget = ListOfDestinations(destinations, parent)
-        # itinerary_list_widget = Listof_Itineraries()
+        # itinerary_list_widget = Listof_Itineraries(" Bandung Trip 10/10/24 - 15/10/24", headers, list_of_places, list_of_hours, parent)
         # itinerary_detail_widget = Itinerary_Details()
         # article_detail_widget = 
         form_add_destinasi_widget = FormAddDestination(parent)
@@ -83,8 +91,9 @@ class UI(object):
         form_edit_destinasi_widget = FormEditDestination(parent)
         # form_edit_itinerary_widget = FormEditItinerary(parent)
         
-        
-        parent.stacked_widget.form_widget = article_list_widget
+        # list_of_itineraries = Listof_Itineraries("trip", headers, list_of_places, list_of_hours,parent)
+        # content_container.addWidget(list_of_itineraries)
+        # parent.stacked_widget.form_widget = article_list_widget
 
         content_container.addWidget(home_widget) #PAGE 0
         content_container.addWidget(article_list_widget) #PAGE 1

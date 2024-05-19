@@ -28,6 +28,7 @@ class ArticleDetailWindow(QtWidgets.QWidget):
         self.layout = QtWidgets.QVBoxLayout(self)
 
         self.back_button = BackButton()
+        self.back_button.clicked.connect(lambda: self.main_window.stacked_widget.setCurrentIndex(1))
         self.layout.addWidget(self.back_button, alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
 
         # Scroll area setup
