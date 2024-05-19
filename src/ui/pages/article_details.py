@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QScrollArea, QWidget
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 
 from src.ui.components.backbutton.backbutton import BackButton
 from src.controller.artikel_controller import ArtikelController
@@ -35,7 +36,7 @@ class ArticleDetailWindow(QtWidgets.QWidget):
         scroll_area = QtWidgets.QScrollArea()
         scroll_area.setWidgetResizable(True)
         self.layout.addWidget(scroll_area)
-        self.setStyleSheet("background-color: #FFF9ED; border:none;")  # Set background color
+        self.setStyleSheet("background-color: transparent; border:none;")  # Set background color
 
         scroll_content = QtWidgets.QWidget()
         scroll_area.setWidget(scroll_content)
@@ -81,7 +82,7 @@ class ArticleDetailWindow(QtWidgets.QWidget):
         self.description_label.setFixedWidth(1164)
         self.description_label.setStyleSheet("""
             QLabel {
-                font: 32px;
+                font: 22px;
                 padding: 5px;
             }
         """)
