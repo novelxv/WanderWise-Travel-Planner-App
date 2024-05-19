@@ -36,3 +36,6 @@ class FormBox(QWidget):
         shadow.setColor(QColor(0, 0, 0, 160))
         shadow.setOffset(3, 3)
         self.field.setGraphicsEffect(shadow)
+    
+    def setText(self, text):
+        self.field.setText(text)

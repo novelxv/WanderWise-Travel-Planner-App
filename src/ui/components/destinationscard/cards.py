@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QGridLayout, QVBoxLayout
-from ui.components.destinationscard.destinationscard import *
+from src.ui.components.destinationscard.destinationscard import *
 
 class Cards(QWidget):
      def __init__(self, content, card_count, base_url, parent=None):
