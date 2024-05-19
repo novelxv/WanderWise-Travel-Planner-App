@@ -14,18 +14,19 @@ class ProgressBarWindow(QWidget):
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setValue(int(now/goal*100))  # Set initial value to 70%
         self.progress_bar.setTextVisible(False)  # Hide the percentage text
+        self.progress_bar.setFixedSize(550, 40)
 
         # Set the stylesheet for the progress bar to match the desired design
         self.progress_bar.setStyleSheet("""
             QProgressBar {
                 border: 1px solid black;
-                border-radius: 8px;
+                border-radius: 18px;
                 background: white;
                 height: 20px;
             }
             QProgressBar::chunk {
                 background-color: #48C9B0;
-                border-radius: 8px;
+                border-radius: 18px;
                 margin: 0px;
             }
         """)
