@@ -24,7 +24,7 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         destinasi = dest_controller.get_destinasi_by_id(destination_id)
         itineraries = self.controller.get_destinasi_detail(destination_id)
 
-        trip = "Trip to " + str(destinasi.nama)  # Adjust as necessary based on your logic
+        trip = "Trip to " + str(destinasi.nama) + str(destinasi.tanggal_mulai) + " - " + str(destinasi.tanggal_selesai) # Adjust as necessary based on your logic
         headers = [itinerary.tanggal.strftime('%A %d/%m') for itinerary in itineraries]
         list_of_places = [[itinerary.lokasi for itinerary in itineraries]]
         list_of_hours = [[f"{itinerary.waktu_mulai.strftime('%H:%M')}-{itinerary.waktu_selesai.strftime('%H:%M')}" for itinerary in itineraries]]
