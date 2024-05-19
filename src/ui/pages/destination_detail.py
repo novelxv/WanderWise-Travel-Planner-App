@@ -43,13 +43,13 @@ class DestinationDetail(QWidget):
         imagedest = "img/icons/HelloDestTag.png"  # Path to your image
         self.image_label.setPixmap(QtGui.QPixmap(imagedest).scaled(850, 450, QtCore.Qt.KeepAspectRatio))
         self.image_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)  # Align to top-left
-        self.grid_layout.addWidget(self.image_label, 0, 0, 1, 1)
+        self.grid_layout.addWidget(self.image_label, 0, 0, 2, 1)
 
         # Tag label
-        self.tag_label = QLabel("An exciting adventure starts on XX/XX/XX - XX/XX/XX")
-        self.tag_label.setStyleSheet("font-size: 18px; font-weight: bold; background: transparent;")
+        self.tag_label = QLabel("An exciting adventure starts on\n" + self.destinasi.tanggal_mulai + "-" + self.destinasi.tanggal_selesai)
+        self.tag_label.setStyleSheet("font-size: 36px; font-weight: bold; background: transparent; margin-top: 100px")
         self.tag_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignRight)
-        self.grid_layout.addWidget(self.tag_label, 1, 0, 1, 1)
+        self.grid_layout.addWidget(self.tag_label, 0, 1, 1, 1)
 
         # Top layout for buttons
         self.top_layout = QHBoxLayout()
@@ -77,21 +77,51 @@ class DestinationDetail(QWidget):
         # Scrollable area for itineraries
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setFixedSize(400, 200)  # Set fixed size for the scrollable area
+        self.scroll_area.setFixedSize(600, 450)  # Set fixed size for the scrollable area
 
         # Container widget for scroll area
         self.scroll_widget = QWidget()
+        self.scroll_widget.setStyleSheet("background-color: #FFFFFF")
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
         self.scroll_layout.setContentsMargins(0, 0, 0, 0)
 
         # Dummy data for itineraries
         for i in range(10):
             itinerary_label = QLabel(f"Itinerary {i + 1}: Activity details here")
-            itinerary_label.setStyleSheet("font-size: 16px;")
+            itinerary_label.setStyleSheet("font-size: 24px; margin: 5px; background-color: #FFFFFF")
             self.scroll_layout.addWidget(itinerary_label)
 
         self.scroll_area.setWidget(self.scroll_widget)
-        self.grid_layout.addWidget(self.scroll_area, 2, 0, 1, 1)
+        self.scroll_area.setStyleSheet("""
+            QScrollArea {
+                border: 2px solid #000000;
+                border-radius: 5px;
+                background-color: #FFFFFF;
+                margin-left: 50px;
+                margin-top: 150px;
+            }
+            QScrollBar:vertical {
+                background: #e0e0e0;
+                width: 14px;
+            }
+            QScrollBar::handle:vertical {
+                background: #666666;
+                min-height: 20px;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                background: #ffffff;
+                height: 14px;
+            }
+            QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+                background: #ffffff;
+                width: 3px;
+                height: 3px;
+            }
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+            }
+        """)
+        self.grid_layout.addWidget(self.scroll_area, 1, 0, 2, 3)
 
         # Container for budget-related elements
         self.budget_container = QWidget()
@@ -104,16 +134,15 @@ class DestinationDetail(QWidget):
         self.budget_layout.addWidget(self.budget_goals_label, alignment=Qt.AlignRight)
 
         # Budget value label
-        self.budget_value_label = QLabel("20,000,000")
+        self.budget_value_label = QLabel(self.destinasi.budget)
         self.budget_value_label.setStyleSheet("font-size: 50px; font-weight: bold; background: transparent;")
         self.budget_layout.addWidget(self.budget_value_label, alignment=Qt.AlignRight)
 
         # Progress bar
-        self.progress_bar_window = ProgressBarWindow(2000000, 20000000)
-        self.progress_bar_window.setFixedSize(400, 30)  # Set fixed size for the progress bar
+        self.progress_bar_window = ProgressBarWindow(self.destinasi.tabungan, self.destinasi.budget)
         self.budget_layout.addWidget(self.progress_bar_window, alignment=Qt.AlignRight)
 
-        self.grid_layout.addWidget(self.budget_container, 2, 1, 1, 1, alignment=Qt.AlignTop)
+        self.grid_layout.addWidget(self.budget_container, 1, 1, 2, 1, alignment=Qt.AlignTop)
 
         # Button layout for "Budgeting" and "Itineraries"
         self.bottom_button_layout = QHBoxLayout()
