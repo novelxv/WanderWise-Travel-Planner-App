@@ -3,10 +3,12 @@ from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.ui.components.boxofitinerary.boxofitinerary import *
 from src.ui.components.addbutton.addbutton import *
-from src.ui.pages.form_add_itinerary import *
+from src.ui.pages.form_add_itinerary import FormAddItinerary
 from src.ui.components.backbutton.backbutton import BackButton
 from src.controller.itinerary_controller import ItineraryController
 from src.controller.destinasi_controller import DestinasiController
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QLabel
 
 class Listof_Itineraries(QtWidgets.QMainWindow):
     def __init__(self, destination_id, before_page, main_window=None):
@@ -14,12 +16,13 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         self.main_window = main_window
         self.stacked_widget = main_window.stacked_widget
         self.before_page = before_page
+        self.destination_id = destination_id
 
         # Initialize ItineraryController to fetch data
-        controller = ItineraryController()
+        self.controller = ItineraryController()
         dest_controller = DestinasiController()
         destinasi = dest_controller.get_destinasi_by_id(destination_id)
-        itineraries = controller.get_destinasi_detail(destination_id)
+        itineraries = self.controller.get_destinasi_detail(destination_id)
 
         trip = "Trip to " + str(destinasi.nama)  # Adjust as necessary based on your logic
         headers = [itinerary.tanggal.strftime('%A %d/%m') for itinerary in itineraries]
@@ -125,6 +128,7 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
 
     def show_add_itinerary_form(self):
         self.add_destination_form = FormAddItinerary(self)
+        self.add_destination_form.done_iti_signal.connect(self.on_done_signal)
         self.add_destination_form.setWindowModality(Qt.ApplicationModal)
         self.add_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
         self.add_destination_form.show()
@@ -134,6 +138,10 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
 
     def go_back(self):
         self.stacked_widget.setCurrentWidget(self.before_page)
+
+    def on_done_signal(self, itinerary_data):
+        print("Received done signal with data:", itinerary_data) # debug
+        self.controller.add_itinerary(self.destination_id, itinerary_data[0], itinerary_data[1], itinerary_data[2], itinerary_data[3], itinerary_data[4], itinerary_data[5], itinerary_data[6])
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

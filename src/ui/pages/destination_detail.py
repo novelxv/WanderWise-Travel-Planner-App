@@ -46,7 +46,7 @@ class DestinationDetail(QWidget):
         self.grid_layout.addWidget(self.image_label, 0, 0, 2, 1)
 
         # Tag label
-        self.tag_label = QLabel("An exciting adventure starts on\n" + self.destinasi.tanggal_mulai + "-" + self.destinasi.tanggal_selesai)
+        self.tag_label = QLabel("An exciting adventure starts on\n" + str(self.destinasi.tanggal_mulai) + "-" + str(self.destinasi.tanggal_selesai))
         self.tag_label.setStyleSheet("font-size: 36px; font-weight: bold; background: transparent; margin-top: 100px")
         self.tag_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignRight)
         self.grid_layout.addWidget(self.tag_label, 0, 1, 1, 1)
@@ -134,7 +134,7 @@ class DestinationDetail(QWidget):
         self.budget_layout.addWidget(self.budget_goals_label, alignment=Qt.AlignRight)
 
         # Budget value label
-        self.budget_value_label = QLabel(self.destinasi.budget)
+        self.budget_value_label = QLabel(str(self.destinasi.budget))
         self.budget_value_label.setStyleSheet("font-size: 50px; font-weight: bold; background: transparent;")
         self.budget_layout.addWidget(self.budget_value_label, alignment=Qt.AlignRight)
 

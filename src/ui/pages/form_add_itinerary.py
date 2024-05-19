@@ -11,7 +11,7 @@ from src.ui.components.errors.error import ErrorPopup
 from src.ui.components.calendar.calendar_picker import *
 
 class FormAddItinerary(QWidget):
-    done_signal = pyqtSignal(list)  # Ubah sinyal untuk mengirimkan data sebagai list
+    done_iti_signal = pyqtSignal(list)  # Ubah sinyal untuk mengirimkan data sebagai list
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -167,7 +167,7 @@ class FormAddItinerary(QWidget):
                     err_popup.exec_()
                     return
 
-        self.done_signal.emit(itinerary_data)
+        self.done_iti_signal.emit(itinerary_data)
         print("Done button clicked", itinerary_data)
         self.close_form()
 

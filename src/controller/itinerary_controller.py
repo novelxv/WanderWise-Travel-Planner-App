@@ -24,9 +24,11 @@ class ItineraryController:
     
     def get_destinasi_detail(self, id):
         result = self.cursor.execute('SELECT * FROM t_destinasi NATURAL JOIN t_itinerary WHERE destinasi_id=?', (id,)).fetchall()
+        print(result) # debug
         itinerary_list = []
         for row in result:
-            itinerary_list.append(Itinerary(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]))
+            itinerary_list.append(Itinerary(row[7], row[0], row[8], row[9], row[10], row[11], row[12], row[13], row[14]))
+        print(itinerary_list) # debug
         return itinerary_list 
 
     
