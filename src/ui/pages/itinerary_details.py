@@ -5,10 +5,15 @@ from PyQt5.QtWidgets import QVBoxLayout, QScrollArea, QFrame, QLabel, QHBoxLayou
 from src.ui.components.ovalbutton.ovalbutton import *
 
 class Itinerary_Details(QtWidgets.QMainWindow):
-    def __init__(self, location, hours, location_desc, ticket, transport, notes):
-        super().__init__()
-        self.setWindowTitle("Itinerary Details")
-        self.setGeometry(100, 100, 800, 600)
+    def __init__(self, location, hours, location_desc, ticket, transport, notes, main_window=None):
+        super().__init__(main_window)
+        self.main_window = main_window
+        self.stacked_widget = main_window.stacked_widget
+
+        main_window_width = main_window.width()
+        main_window_height = main_window.height()
+        self.setFixedWidth(main_window_width)
+        self.setFixedHeight(main_window_height)
 
         self.central_widget = QtWidgets.QWidget()
         self.setCentralWidget(self.central_widget)

@@ -4,7 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from src.ui.components.boxofitinerary.boxofitinerary import *
 from src.ui.components.addbutton.addbutton import *
 from src.ui.pages.form_add_itinerary import *
-
+from src.ui.components.backbutton.backbutton import BackButton
 class Listof_Itineraries(QtWidgets.QMainWindow):
     def __init__(self, trip, headers, list_of_places, list_of_hours, main_window=None):
         super().__init__(main_window)
@@ -18,10 +18,21 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
 
         self.central_widget = QtWidgets.QWidget()
         self.setCentralWidget(self.central_widget)
-        self.layout = QtWidgets.QVBoxLayout(self.central_widget)
-        self.layout.setContentsMargins(10, 40, 80, 0)  # Adjust margins to create space on the sides
+
+        # Create a main layout for the central widget
+        self.main_layout = QtWidgets.QVBoxLayout(self.central_widget)
+        self.main_layout.setContentsMargins(10, 40, 80, 0)  # Adjust margins to create space on the sides
+
+        # Header layout to hold back button and header labels
+        self.header_layout = QtWidgets.QHBoxLayout()
+        self.main_layout.addLayout(self.header_layout)
+
+        # BACK BUTTON
+        self.back_button = BackButton()
+        self.header_layout.addWidget(self.back_button, alignment=Qt.AlignRight)
 
         # Add header ITINERARY and trip labels
+        self.header_labels_layout = QtWidgets.QVBoxLayout()
         self.header_itinerary_label = QtWidgets.QLabel("ITINERARY")
         self.header_trip_label = QtWidgets.QLabel(trip)
         self.header_itinerary_label.setStyleSheet("""
@@ -35,26 +46,28 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         """)
         self.header_trip_label.setStyleSheet("""
             QLabel {
-                font: bold 35px ;
+                font: bold 35px;
                 text-align: left;
                 padding-left: 20px;
             }
         """)
-
-        self.layout.addWidget(self.header_itinerary_label)
-        self.layout.addWidget(self.header_trip_label)
+        self.header_labels_layout.addWidget(self.header_itinerary_label)
+        self.header_labels_layout.addWidget(self.header_trip_label)
+        
+        self.header_layout.addLayout(self.header_labels_layout)
+        self.header_layout.addStretch()  # Add stretch to push the header labels to the left
 
         # Add a blue line divider
         self.divider_line = QFrame()
         self.divider_line.setFrameShape(QFrame.HLine)
         self.divider_line.setFrameShadow(QFrame.Sunken)
         self.divider_line.setStyleSheet("color: #005A6D; background-color: #005A6D; height: 2px; border-radius: 5px;")
-        self.layout.addWidget(self.divider_line)
+        self.main_layout.addWidget(self.divider_line)
 
         # Scroll area setup
         scroll_area = QtWidgets.QScrollArea()
         scroll_area.setWidgetResizable(True)
-        self.layout.addWidget(scroll_area, alignment=Qt.AlignLeft)  # Align scroll area to the left
+        self.main_layout.addWidget(scroll_area, alignment=Qt.AlignLeft)  # Align scroll area to the left
         self.setStyleSheet("background: transparent; border:none;")
         scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)  # Hide vertical scroll bar
         scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)  # Hide horizontal scroll
@@ -72,20 +85,27 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
             row = index // 2
             col = index % 2
             self.grid_layout.addWidget(schedule_widget, row, col, alignment=Qt.AlignLeft)  # Align each widget to the left
-            schedule_widget.table_layout.itemAt(index).widget().clicked.connect(lambda i=index, r=schedule_widget.table_layout.itemAt(index).widget().index: self.handleScheduleWidgetRowClick(i, r))
+            for place_index in range(len(places)):
+                schedule_widget.table_layout.itemAt(place_index).widget().clicked.connect(
+                    lambda place_index=place_index, widget_index=index: self.handleScheduleWidgetRowClick(widget_index, place_index)
+                )
 
         # Create and add footer
         self.footer_label = QLabel("")
         self.footer_label.setAlignment(Qt.AlignCenter)
         self.footer_label.setFixedHeight(125)  # Adjust the height of the footer as needed
-        self.layout.addWidget(self.footer_label)
+        self.main_layout.addWidget(self.footer_label)
 
         # Add the floating add button
         self.add_button = FloatingAddButton(self, position=(157, 170))
         self.add_button.clicked.connect(self.show_add_itinerary_form)
         self.add_button.setFloatingPosition()  # Ensure it is positioned correctly
         self.setStyleSheet("background: transparent; border:none;")
-        self.resizeEvent = lambda event: self.add_button.setFloatingPosition()
+        self.resizeEvent = lambda event: self.adjust_positions(event)
+
+    def adjust_positions(self, event):
+        # Adjust positions of floating elements
+        self.add_button.setFloatingPosition()
 
     def show_add_itinerary_form(self):
         self.add_destination_form = FormAddItinerary(self)
@@ -95,7 +115,6 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
 
     def handleScheduleWidgetRowClick(self, widget_index, row_index):
         print(f"Clicked widget {widget_index}, row {row_index}")
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
@@ -115,3 +134,5 @@ if __name__ == "__main__":
     main_window.setCentralWidget(widget)
     main_window.show()
     sys.exit(app.exec_())
+
+
