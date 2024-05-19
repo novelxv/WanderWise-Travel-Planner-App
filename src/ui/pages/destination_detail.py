@@ -46,7 +46,7 @@ class DestinationDetail(QWidget):
         self.grid_layout.addWidget(self.image_label, 0, 0, 2, 1)
 
         # Tag label
-        self.tag_label = QLabel("An exciting adventure starts on\n" + self.destinasi.tanggal_mulai + "-" + self.destinasi.tanggal_selesai)
+        self.tag_label = QLabel("An exciting adventure starts on\n" + str(self.destinasi.tanggal_mulai) + "-" + str(self.destinasi.tanggal_selesai))
         self.tag_label.setStyleSheet("font-size: 36px; font-weight: bold; background: transparent; margin-top: 100px")
         self.tag_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignRight)
         self.grid_layout.addWidget(self.tag_label, 0, 1, 1, 1)
@@ -88,7 +88,7 @@ class DestinationDetail(QWidget):
         # Dummy data for itineraries
         for i in range(len(self.itinerary)):
             # itinerary_label = QLabel(f"Itinerary {i + 1}: Activity details here")
-            itinerary_label = QLabel(self.itinerary[i].lokasi + " " + self.itinerary[i].tanggal)
+            itinerary_label = QLabel(str(self.itinerary[i].lokasi) + " " + str(self.itinerary[i].tanggal))
             itinerary_label.setStyleSheet("font-size: 24px; margin: 5px; background-color: #FFFFFF")
             self.scroll_layout.addWidget(itinerary_label)
 
