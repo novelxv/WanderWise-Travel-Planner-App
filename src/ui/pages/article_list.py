@@ -19,7 +19,7 @@ class ArticleList(QWidget):
         self.setFixedHeight(parentHeight)
 
         BASE_URL = 'img/'
-        
+
         # Create the header label
         self.header_itinerary_label = QtWidgets.QLabel("ARTICLES")
         self.header_itinerary_label.setStyleSheet("""
@@ -32,9 +32,13 @@ class ArticleList(QWidget):
                 padding-bottom: 40px;
             }
         """)
-        
-        # Create the top layout and add the header label
+
+        # Create the back button
+        self.back_button = BackButton()
+
+        # Create the top layout and add the back button and header label
         top_layout = QtWidgets.QHBoxLayout()
+        top_layout.addWidget(self.back_button, alignment=QtCore.Qt.AlignRight)
         top_layout.addWidget(self.header_itinerary_label)
         top_layout.addStretch()  # Ensure the label is aligned to the left
 
@@ -46,9 +50,6 @@ class ArticleList(QWidget):
         layout.addLayout(top_layout)
         layout.addWidget(cards)
 
-        self.back_button = BackButton()
-        self.back_button.clicked.connect(lambda: self.parent.stacked_widget.setCurrentIndex(0))
-        layout.addWidget(self.back_button, alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
 
         # Adjust layout margins and spacings
         layout.setSpacing(0)
