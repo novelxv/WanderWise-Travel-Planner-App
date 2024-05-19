@@ -1,5 +1,5 @@
 import os
-from ui.components.articlecard.cards import Cards
+from src.ui.components.articlecard.cards import Cards
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap
 

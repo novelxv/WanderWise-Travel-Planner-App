@@ -103,12 +103,3 @@ class FormAddDestination(QWidget):
 
         # Set the layout for the main widget
         self.setLayout(main_layout)
-
-def main():
-    app = QApplication(sys.argv)
-    form_add_destination = FormAddDestination()
-    form_add_destination.show()
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()

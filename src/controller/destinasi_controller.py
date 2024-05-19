@@ -25,11 +25,11 @@ class DestinasiController:
     
     # get all destinasi from t_destinasi with the corresponding kategori
     def get_destinasi_by_kategory(self, kategori):
-        result = self.cursor.execute('SELECT * FROM t_destinasi WHERE kategori=?', (kategori,)).fetchone()
-        if result is not None:
-            return Destinasi(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
-        else:
-            return None
+        result = self.cursor.execute('SELECT * FROM t_destinasi WHERE kategori=?', (kategori,)).fetchall()
+        destinasi_list = []
+        for row in result:
+            destinasi_list.append(Destinasi(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
+        return destinasi_list
 
     # add new destinasi 
     def add_destinasi(self, nama, kategori, tanggal_mulai, tanggal_selesai, budget, tabungan):

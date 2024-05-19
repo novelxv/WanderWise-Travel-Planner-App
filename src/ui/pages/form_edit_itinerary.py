@@ -94,12 +94,3 @@ class FormEditItinerary(QWidget):
 
         # Set the layout for the main widget
         self.setLayout(main_layout)
-
-def main():
-    app = QApplication(sys.argv)
-    form_edit_itinerary = FormEditItinerary()
-    form_edit_itinerary.show()
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()
