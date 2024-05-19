@@ -67,11 +67,7 @@ class Itinerary_Details(QtWidgets.QMainWindow):
         self.back_button = BackButton()
         self.back_button.clicked.connect(self.go_back)
 
-        self.edit_button = OvalButtonIcon("Edit", "img/icons/Pencil.png", "#FFA200", 40)
-        self.delete_button = OvalButtonIcon("Delete", "img/icons/trash-can.png", "#FF5D00", 40)
         self.header_layout.addWidget(self.back_button)
-        self.header_layout.addWidget(self.edit_button)
-        self.header_layout.addWidget(self.delete_button)
 
         self.layout.addLayout(self.header_layout)
 
@@ -148,20 +144,10 @@ class Itinerary_Details(QtWidgets.QMainWindow):
 
         # Connect button signals to handlers
         self.back_button.clicked.connect(self.handle_back_button_click)
-        self.edit_button.clicked.connect(self.handle_edit_button_click)
-        self.delete_button.clicked.connect(self.handle_delete_button_click)
 
-    def handle_edit_button_click(self):
-        print("Edit button clicked!")
-        # Add your logic for edit button click here
-
-    def handle_delete_button_click(self):
-        print("Delete button clicked!")
-        # Add your logic for delete button click here
 
     def handle_back_button_click(self):
         print("Back button clicked!")
-        # Add your logic for back button click here
 
     def resizeEvent(self, event):
         # Set the maximum width of the description label to 70% of the screen width
