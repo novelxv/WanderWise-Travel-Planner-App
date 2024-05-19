@@ -12,8 +12,8 @@ class FormEditItinerary(QWidget):
         self.stacked_widget = parent.stacked_widget if parent else None
 
         # Set size if parent is not provided
-        parentWidth = parent.width() if parent else 1214
-        parentHeight = parent.height() if parent else 793
+        parentWidth = 1214
+        parentHeight = 793
 
         # Set dashboard size
         self.setFixedWidth(int(0.9 * parentWidth))
@@ -86,6 +86,7 @@ class FormEditItinerary(QWidget):
         oval_button.setParent(content_widget)
         oval_button.setFixedSize(149, 70)
         oval_button.move(450, 700)
+        oval_button.clicked.connect(self.done_button_clicked)
 
         # Adding the scroll area to the main layout
         main_layout = QVBoxLayout(container)
@@ -94,6 +95,9 @@ class FormEditItinerary(QWidget):
 
         # Set the layout for the main widget
         self.setLayout(main_layout)
+
+    def done_button_clicked(self):
+        print("Done button clicked")
 
 def main():
     app = QApplication(sys.argv)

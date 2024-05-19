@@ -1,10 +1,10 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel
 from PyQt5.QtGui import QPixmap
-from src.ui.components.calendar.calendar_picker import CalendarPicker
-from src.ui.components.dropdown.dropdown import DropDown
-from src.ui.components.ovalbutton.ovalbutton import OvalButton
+from src.ui.components.calendar.calendar_picker import *
+from src.ui.components.dropdown.dropdown import *
+from src.ui.components.ovalbutton.ovalbutton import *
 from src.ui.components.Form.form_box import FormBox
 
 class FormAddDestination(QWidget):
@@ -14,8 +14,8 @@ class FormAddDestination(QWidget):
         self.stacked_widget = parent.stacked_widget if parent else None
 
         # Set size if parent is not provided
-        parentWidth = parent.width() if parent else 1214
-        parentHeight = parent.height() if parent else 793
+        parentWidth = 1214
+        parentHeight = 793
 
         # Set dashboard size
         self.setFixedWidth(int(0.9 * parentWidth))
@@ -54,18 +54,20 @@ class FormAddDestination(QWidget):
         scroll_area.setWidget(content_widget)
 
         # add the FormBox and CalendarPicker widget For Start Date
-        form_box_sdate = FormBox("01/01/01", self, 400)
-        form_box_sdate.setParent(content_widget)
-        form_box_sdate.move(100, 180)
+        self.form_box_sdate = FormBox("01/01/01", self, 400)
+        self.form_box_sdate.setParent(content_widget)
+        self.form_box_sdate.move(100, 180)
         calendar_picker_start = CalendarPicker()
+        calendar_picker_start.dateSelected.connect(self.update_start_date)
         calendar_picker_start.setParent(content_widget)
         calendar_picker_start.move(360, 185)
 
         # add the FormBox and CalendarPicker widget For End Date
-        form_box_edate = FormBox("02/01/01", self, 400)
-        form_box_edate.setParent(content_widget)
-        form_box_edate.move(545, 180)
+        self.form_box_edate = FormBox("02/01/01", self, 400)
+        self.form_box_edate.setParent(content_widget)
+        self.form_box_edate.move(545, 180)
         calendar_picker_end = CalendarPicker()
+        calendar_picker_end.dateSelected.connect(self.update_end_date)
         calendar_picker_end.setParent(content_widget)
         calendar_picker_end.move(805, 185)
 
@@ -75,10 +77,9 @@ class FormAddDestination(QWidget):
         form_box_destination.move(100, 290)
 
         # Add DropDown instance For Category
-        drop_down = DropDown(option_type="category", button_text="Category", parent=self)
+        drop_down = DropDown(option_type="category", button_text = "Category", parent=self)
         drop_down.setParent(content_widget)
-        drop_down.raise_()
-        drop_down.move(100, 400)
+        drop_down.move(90, 405)
 
         # Add the FormBox instance For savings
         form_box_savings = FormBox("XX XXX XXX", self, 950)
@@ -91,18 +92,11 @@ class FormAddDestination(QWidget):
         form_box_budget.move(100, 625)
 
         # Add the oval button done for submitting the form
-        oval_button_done = OvalButton("Done", "#69C99E", 35, self)
-        oval_button_done.setParent(content_widget)
-        oval_button_done.setFixedSize(149, 70)
-        oval_button_done.move(450, 800)
-        oval_button_done.clicked.connect(self.close_form)  # Connect the done button to close the form
-
-        # Add the cancel button for closing the form
-        cancel_button = OvalButton("Cancel", "#FF5D00", 35, self)
-        cancel_button.setParent(content_widget)
-        cancel_button.setFixedSize(149, 70)
-        cancel_button.move(620, 800)
-        cancel_button.clicked.connect(self.close_form)  # Connect the cancel button to close the form
+        oval_button = OvalButton("Done", "#69C99E", 35, self)
+        oval_button.setParent(content_widget)
+        oval_button.setFixedSize(149, 70)
+        oval_button.move(450, 700)
+        oval_button.clicked.connect(self.done_button_clicked)
 
         # Adding the scroll area to the main layout
         main_layout = QVBoxLayout(container)
@@ -111,12 +105,21 @@ class FormAddDestination(QWidget):
 
         # Set the layout for the main widget
         self.setLayout(main_layout)
+    
+    def update_start_date(self, date):
+        self.form_box_sdate.setText(date.toString("dd/MM/yy"))
 
-    def close_form(self):
-        self.close()
+    def update_end_date(self, date):
+        self.form_box_edate.setText(date.toString("dd/MM/yy"))
+    
+    def done_button_clicked(self):
+        print("Done button clicked")
 
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
     form_add_destination = FormAddDestination()
     form_add_destination.show()
     sys.exit(app.exec_())
+
+if __name__ == "__main__":
+    main()

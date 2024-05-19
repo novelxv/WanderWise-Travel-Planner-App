@@ -23,10 +23,12 @@ class ArticleList(QWidget):
         self.header_itinerary_label = QtWidgets.QLabel("ARTICLES")
         self.header_itinerary_label.setStyleSheet("""
             QLabel {
-                font: 35px bold;
+                font: bold 35px;
                 text-align: left;
-                color: #000000;
-                padding: none;
+                color: #000080;
+                background: none;
+                padding-top: 40px;
+                padding-bottom: 40px;
             }
         """)
         
