@@ -2,12 +2,15 @@ import sys
 from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import QSize, Qt
+from src.ui.pages.article_details import ArticleDetailWindow
 
 class ArticleCard(QWidget):
-    def __init__(self, icon_path, text, width, height, parent=None):
+    def __init__(self, article_id, icon_path, text, width, height, parent=None):
         super().__init__(parent)
         # self.stacked_widget = parent.stacked_widget
         self.content = text
+        self.article_id = article_id
+        self.parent = parent
         
         # Set image
         self.image = QLabel()
@@ -60,7 +63,10 @@ class ArticleCard(QWidget):
         self.setContentsMargins(0,0,0,0)
 
     def handle_article_click(self, event):
-        print("clicked")
+        print("clicked", self.article_id)
+        self.article_detail_window = ArticleDetailWindow(self.article_id, self.parent)
+        self.parent.stacked_widget.addWidget(self.article_detail_window)
+        self.parent.stacked_widget.setCurrentWidget(self.article_detail_window)
         # UPDATE RECIPE DETAIL WIDGET
         # self.stacked_widget.article_detail_widget.update_article_detail(self.content)
 
