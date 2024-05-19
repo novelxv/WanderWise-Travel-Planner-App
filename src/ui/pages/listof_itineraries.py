@@ -142,6 +142,29 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
     def on_done_signal(self, itinerary_data):
         print("Received done signal with data:", itinerary_data) # debug
         self.controller.add_itinerary(self.destination_id, itinerary_data[0], itinerary_data[1], itinerary_data[2], itinerary_data[3], itinerary_data[4], itinerary_data[5], itinerary_data[6])
+        self.refresh_itineraries()
+
+    def refresh_itineraries(self):
+        for i in reversed(range(self.grid_layout.count())):
+            self.grid_layout.itemAt(i).widget().setParent(None)
+
+        # Fetch the updated list of itineraries
+        itineraries = self.controller.get_destinasi_detail(self.destination_id)
+
+        # Rebuild the list of itineraries
+        headers = [itinerary.tanggal.strftime('%A %d/%m') for itinerary in itineraries]
+        list_of_places = [[itinerary.lokasi for itinerary in itineraries]]
+        list_of_hours = [[f"{itinerary.waktu_mulai.strftime('%H:%M')}-{itinerary.waktu_selesai.strftime('%H:%M')}" for itinerary in itineraries]]
+
+        for index, (header, places, hours) in enumerate(zip(headers, list_of_places, list_of_hours)):
+            schedule_widget = ScheduleWidget(header, places, hours)
+            row = index // 2
+            col = index % 2
+            self.grid_layout.addWidget(schedule_widget, row, col, alignment=Qt.AlignLeft)  # Align each widget to the left
+            for place_index in range(len(places)):
+                schedule_widget.table_layout.itemAt(place_index).widget().clicked.connect(
+                    lambda place_index=place_index, widget_index=index: self.handleScheduleWidgetRowClick(widget_index, place_index)
+                )
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
