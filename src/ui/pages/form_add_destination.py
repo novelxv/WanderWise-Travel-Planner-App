@@ -1,6 +1,7 @@
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from src.ui.components.calendar.calendar_picker import *
 from src.ui.components.dropdown.dropdown import *
@@ -8,6 +9,7 @@ from src.ui.components.ovalbutton.ovalbutton import *
 from src.ui.components.Form.form_box import FormBox
 
 class FormAddDestination(QWidget):
+    done_signal = QtCore.pyqtSignal()
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
@@ -96,7 +98,7 @@ class FormAddDestination(QWidget):
         oval_button.setParent(content_widget)
         oval_button.setFixedSize(149, 70)
         oval_button.move(350, 700)
-        oval_button.clicked.connect(self.close_form)
+        oval_button.clicked.connect(self.done_button_clicked)
 
         oval_button = OvalButton("Close", "#69C99E", 35, self)
         oval_button.setParent(content_widget)
@@ -119,7 +121,9 @@ class FormAddDestination(QWidget):
         self.form_box_edate.setText(date.toString("dd/MM/yy"))
     
     def done_button_clicked(self):
+        self.done_signal.emit()
         print("Done button clicked")
+        self.close_form()
 
     def close_form(self):
         self.close()

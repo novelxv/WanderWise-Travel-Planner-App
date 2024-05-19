@@ -104,9 +104,13 @@ class ListOfDestinations(QWidget):
 
     def show_add_destination_form(self):
         self.add_destination_form = FormAddDestination(self)
+        self.add_destination_form.done_signal.connect(self.on_done_signal)
         self.add_destination_form.setWindowModality(Qt.ApplicationModal)
         self.add_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
         self.add_destination_form.show()
+
+    def on_done_signal(self):
+        print("Done adding destination")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
