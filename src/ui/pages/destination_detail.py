@@ -10,12 +10,20 @@ from src.ui.components.popup.pop_up_confirm import ConfirmationDialog
 from src.ui.components.progressbar.progressbar import ProgressBarWindow
 from src.controller.destinasi_controller import *
 from src.ui.components.backbutton.backbutton import BackButton
+from src.ui.pages.budgeting import *
+from src.controller.destinasi_controller import *
+from src.controller.itinerary_controller import *
+from src.ui.pages.listof_itineraries import *
 
 class DestinationDetail(QWidget):
     def __init__(self, destination_id, main_window=None):
         super().__init__(main_window)
         self.main_window = main_window
         self.destination_id = destination_id
+        self.destinasi_controller = DestinasiController()
+        self.itinerary_controller = ItineraryController()
+        self.destinasi = self.destinasi_controller.get_destinasi_by_id(self.destination_id)
+        self.itinerary = self.itinerary_controller.get_destinasi_detail(self.destination_id)
 
         # Main window size
         main_window_width = main_window.width()
@@ -52,6 +60,7 @@ class DestinationDetail(QWidget):
 
         # Add buttons
         self.back_button = BackButton()
+        self.back_button.clicked.connect(lambda: self.main_window.stacked_widget.setCurrentIndex(3))
         self.edit_button = OvalButtonIcon("Edit", "img/icons/Pencil.png", "#FFA200", 40)
         self.delete_button = OvalButtonIcon("Delete", "img/icons/trash-can.png", "#FF5D00", 40)
 
@@ -148,11 +157,16 @@ class DestinationDetail(QWidget):
 
     def handle_budgeting_button_click(self):
         print("Budgeting button clicked!")
-        # Add your logic for budgeting button click here
+        print("CEK KEGANTI GA TABUNGAN", self.destinasi.tabungan) # debug
+        budgeting_page = BudgetingWindow(self.destinasi, self.main_window, self)
+        self.main_window.stacked_widget.addWidget(budgeting_page)
+        self.main_window.stacked_widget.setCurrentWidget(budgeting_page)
 
     def handle_itineraries_button_click(self):
         print("Itineraries button clicked!")
-        # Add your logic for itineraries button click here
+        itinerary_page = Listof_Itineraries(self.destination_id, self, self.main_window)
+        self.main_window.stacked_widget.addWidget(itinerary_page)
+        self.main_window.stacked_widget.setCurrentWidget(itinerary_page)
 
     def handle_back_button_click(self):
         print("Back button clicked!")

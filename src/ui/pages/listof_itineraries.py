@@ -9,10 +9,11 @@ from src.controller.itinerary_controller import ItineraryController
 from src.controller.destinasi_controller import DestinasiController
 
 class Listof_Itineraries(QtWidgets.QMainWindow):
-    def __init__(self, destination_id, main_window=None):
+    def __init__(self, destination_id, before_page, main_window=None):
         super().__init__(main_window)
         self.main_window = main_window
         self.stacked_widget = main_window.stacked_widget
+        self.before_page = before_page
 
         # Initialize ItineraryController to fetch data
         controller = ItineraryController()
@@ -44,7 +45,7 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
         # BACK BUTTON
         self.back_button = BackButton()
         self.header_layout.addWidget(self.back_button, alignment=Qt.AlignRight)
-        self.back_button.clicked.connect(lambda: self.main_window.stacked_widget.setCurrentIndex(0))
+        self.back_button.clicked.connect(self.go_back)
 
         # Add header ITINERARY and trip labels
         self.header_labels_layout = QtWidgets.QVBoxLayout()
@@ -130,6 +131,9 @@ class Listof_Itineraries(QtWidgets.QMainWindow):
 
     def handleScheduleWidgetRowClick(self, widget_index, row_index):
         print(f"Clicked widget {widget_index}, row {row_index}")
+
+    def go_back(self):
+        self.stacked_widget.setCurrentWidget(self.before_page)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
