@@ -2,11 +2,13 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget, QScrollArea, QFrame
 from src.ui.components.addbutton.addbutton import FloatingAddButton
 from src.ui.components.ovalbutton.ovalbutton import OvalButtonIcon
-from src.ui.components.destinationscard.destinationscard import *
+from src.ui.components.destinationscard.destinationscard import CustomButton
 from src.ui.pages.form_add_destination import FormAddDestination
 from src.ui.components.backbutton.backbutton import BackButton
 import sys
 from PyQt5.QtCore import Qt
+from src.controller.destinasi_controller import *
+from src.ui.pages.destination_detail import DestinationDetail
 
 class ListOfDestinations(QWidget):
     def __init__(self, destinations, main_window=None):
@@ -14,6 +16,7 @@ class ListOfDestinations(QWidget):
         self.main_window = main_window
         self.destinations = destinations
         self.stacked_widget = main_window.stacked_widget
+        self.destinations_controller = DestinasiController()
 
         # Main window size
         main_window_width = main_window.width()
@@ -55,6 +58,11 @@ class ListOfDestinations(QWidget):
         booked_button = OvalButtonIcon("Booked", None, "#FF5D00", 40)
         done_button = OvalButtonIcon("Done", None, "#00A6FF", 40)
 
+        idea_button.clicked.connect(self.show_idea_destinations)
+        plan_button.clicked.connect(self.show_plan_destinations)
+        booked_button.clicked.connect(self.show_booked_destinations)
+        done_button.clicked.connect(self.show_done_destinations)
+
         buttons_layout = QHBoxLayout()
         buttons_layout.setSpacing(15)  # Set spacing between buttons
 
@@ -95,10 +103,12 @@ class ListOfDestinations(QWidget):
 
         # Populate the grid layout with destination cards
         for index, destination in enumerate(self.destinations):
+            print("ID", destination.destinasi_id)
             icon_path = "img/icons/destination.jpg"
-            text = destination  
+            text = destination.nama  
             width = 400  # Set the width for each card
-            card = CustomButton(icon_path, text, width)
+            card = CustomButton(icon_path, text, width, destination.destinasi_id)
+            card.clicked_with_id.connect(self.open_destination_detail)
             row = index // 3
             col = index % 3
             self.grid_layout.addWidget(card, row, col)
@@ -120,14 +130,62 @@ class ListOfDestinations(QWidget):
 
     def show_add_destination_form(self):
         self.add_destination_form = FormAddDestination(self)
-        self.add_destination_form.done_signal.connect(self.on_done_signal)
+        self.add_destination_form.done_signal.connect(self.on_done_signal)  # Connect the signal
         self.add_destination_form.setWindowModality(Qt.ApplicationModal)
         self.add_destination_form.setGeometry(40, 80, 800, 600)  # Set fixed size and position
         self.add_destination_form.show()
 
-    def on_done_signal(self):
-        print("Done adding destination")
+    def on_done_signal(self, destination_data):
+        print("Received done signal with data:", destination_data) # debug
+        for i in range(6): # debug
+            print(destination_data[i]) # debug
+        self.destinations_controller.add_destinasi(destination_data[0], destination_data[1], destination_data[2], destination_data[3], destination_data[4], destination_data[5])
+        self.refresh_destinations()
+    
+    def open_destination_detail(self, destination_id):
+        detail_page = DestinationDetail(destination_id, self.main_window)
+        self.stacked_widget.addWidget(detail_page)
+        self.stacked_widget.setCurrentWidget(detail_page)
 
+    def refresh_destinations(self, destinations=None):
+        if destinations is None:
+            destinations = self.destinations
+
+        # Clear the existing cards
+        for i in reversed(range(self.grid_layout.count())): 
+            self.grid_layout.itemAt(i).widget().setParent(None)
+
+        # Get the latest destinations data
+        self.destinations = self.destinations_controller.get_all_destinasi()
+
+        # Populate the grid layout with destination cards
+        for index, destination in enumerate(destinations):
+            print("ID", destination.destinasi_id)
+            icon_path = "img/icons/destination.jpg"
+            text = destination.nama  
+            width = 400  # Set the width for each card
+            card = CustomButton(icon_path, text, width, destination.destinasi_id)
+            card.clicked_with_id.connect(self.open_destination_detail)
+            row = index // 3
+            col = index % 3
+            self.grid_layout.addWidget(card, row, col)
+            card.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+
+    def show_idea_destinations(self):
+        idea_destinations = [d for d in self.destinations if d.kategori == 'Idea']
+        self.refresh_destinations(idea_destinations)
+
+    def show_plan_destinations(self):
+        plan_destinations = [d for d in self.destinations if d.kategori == 'Plan']
+        self.refresh_destinations(plan_destinations)
+
+    def show_booked_destinations(self):
+        booked_destinations = [d for d in self.destinations if d.kategori == 'Booked']
+        self.refresh_destinations(booked_destinations)
+
+    def show_done_destinations(self):
+        done_destinations = [d for d in self.destinations if d.kategori == 'Done']
+        self.refresh_destinations(done_destinations)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
